@@ -102,15 +102,6 @@ balls.funclists = {
 		pl:ChatPrint(table.Random(balls.randomtext))
 	end,
 	function(pl)
-		if not pl:HasWeapon("wlv_bren") then
-			pl:Give("wlv_bren")
-			pl:SelectWeapon("wlv_bren")
-			pl:ChatPrint("[Lucky Ball] You got a *special* weapon!")
-		else
-			pl:ChatPrint(table.Random(balls.randomtext))
-		end
-	end,
-	function(pl)
 		local rand = math.random(10,75)
 		pl:SetHealth(pl:Health() + rand)
 		pl:ChatPrint("[Lucky Ball] You got free +" .. rand .. " HP!")

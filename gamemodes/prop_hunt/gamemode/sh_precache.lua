@@ -8,8 +8,6 @@ hook.Add("PlayerInitialSpawn", "PHE.PrecacheSoundCore", function()
 	local path = {
 		misc = "misc/",
 		core = "prop_idbs/",
-		swep = "weapons/mkbren/",
-		swepb = "weapons/brenmk3/",
 
 		generic = "gamemode/prop_hunt/content/sound/"
 	}
@@ -28,8 +26,6 @@ hook.Add("PlayerInitialSpawn", "PHE.PrecacheSoundCore", function()
 	if GetConVar("ph_precache_phe_core"):GetBool() then
 		PrecacheThis(path.generic .. path.misc)
 		PrecacheThis(path.generic .. path.core)
-		PrecacheThis(path.generic .. path.swep)
-		PrecacheThis(path.generic .. path.swepb)
 	end
 
 	if GetConVar("ph_precache_taunts"):GetBool() then

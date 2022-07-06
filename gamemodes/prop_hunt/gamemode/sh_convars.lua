@@ -63,9 +63,6 @@ local at_delay	= CreateConVar("ph_autotaunt_delay", "45", { FCVAR_SERVER_CAN_EXE
 -- Is autotaunt enabled
 local at_enable	= CreateConVar("ph_autotaunt_enabled", "1",{ FCVAR_SERVER_CAN_EXECUTE, FCVAR_REPLICATED, FCVAR_ARCHIVE }, "Should auto taunting be enabled")
 
--- Use newer model for Bren MK
-local mkbren_new = CreateConVar("ph_mkbren_use_new_mdl", "1", { FCVAR_SERVER_CAN_EXECUTE, FCVAR_REPLICATED, FCVAR_ARCHIVE }, "Use new model for Bren MK II Bonus Weapon (Require Map Restart!!)")
-
 -- OBB Model Data Modifier, specified on map.
 local obb_mod	= CreateConVar("ph_sv_enable_obb_modifier", "1",{ FCVAR_SERVER_CAN_EXECUTE, FCVAR_REPLICATED, FCVAR_ARCHIVE }, "Developer: Enable OBB Model Data Modifier")
 local obb_every = CreateConVar("ph_reload_obb_setting_everyround", "1",{ FCVAR_SERVER_CAN_EXECUTE, FCVAR_REPLICATED, FCVAR_ARCHIVE }, "Developer: Reload OBB Model Data Modifier Every round Restarts")
