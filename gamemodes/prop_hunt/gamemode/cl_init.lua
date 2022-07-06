@@ -11,23 +11,21 @@ CreateClientConVar("ph_show_custom_crosshair","1",true,false,"Show custom crossh
 CreateClientConVar("ph_show_tutor_control","1",true,false,"Show 'Prop Gameplay Control' hud on each prop spawns. This only show twice and reset until map changes/user disconnect.")
 CreateClientConVar("ph_cl_taunt_key","95",true,true,"Key to play a random taunt or open the taunts menu depending on server settings.")
 
-surface.CreateFont( "HunterBlindLockFont",
-	{
-		font	= "Arial",
-		size	= 14,
-		weight	= 1200,
-		antialias = true,
-		underline = false
-	})
+surface.CreateFont( "HunterBlindLockFont", {
+	font	= "Arial",
+	size	= 14,
+	weight	= 1200,
+	antialias = true,
+	underline = false
+})
 
-	surface.CreateFont("TrebuchetBig", {
-		font = "Impact",
-		size = 40
-	})
+surface.CreateFont("TrebuchetBig", {
+	font = "Impact",
+	size = 40
+})
 
 include("sh_init.lua")
 include("sh_config.lua")
-CL_GLOBAL_LIGHT_STATE	= 0
 include("cl_hud_mask.lua")
 include("cl_hud.lua")
 include("cl_menu.lua")
@@ -314,24 +312,6 @@ function PHEDrawPropselectHalos()
 end
 hook.Add("PreDrawHalos", "PHEDrawPropselectHalos", PHEDrawPropselectHalos)
 
--- Called every client frame
-function GM:Think()
-	-- Prop light
-	if client_prop_light && LocalPlayer() && LocalPlayer():IsValid() && LocalPlayer():Alive() && LocalPlayer():Team() == TEAM_PROPS then
-		local prop_light = DynamicLight(LocalPlayer():EntIndex())
-		if prop_light then
-			prop_light.pos = LocalPlayer():GetPos()
-			prop_light.r = 255
-			prop_light.g = 255
-			prop_light.b = 255
-			prop_light.brightness = 0.25
-			prop_light.decay = 1
-			prop_light.size = 180
-			prop_light.dietime = CurTime() + 0.1
-		end
-	end
-end
-
 -- ///////////////////\\\\\\\\\\\\\\\\\ --
 -- 			Net Receives Hooks 			--
 -- ///////////////////\\\\\\\\\\\\\\\\\ --
@@ -419,24 +399,4 @@ net.Receive("SetHull", function()
 	LocalPlayer():SetHull(Vector(hullxy * -1, hullxy * -1, 0), Vector(hullxy, hullxy, huz))
 	LocalPlayer():SetHullDuck(Vector(hullxy * -1, hullxy * -1, 0), Vector(hullxy, hullxy, hulldz))
 	LocalPlayer():SetHealth(new_health)
-end)
-
--- Replaces the flashlight with a client-side dynamic light for props
-net.Receive("PlayerSwitchDynamicLight", function()
-	if client_prop_light then
-		client_prop_light = false
-		surface.PlaySound("prop_idbs/light_off1.wav")
-		CL_GLOBAL_LIGHT_STATE = 0
-	else
-		client_prop_light = true
-		surface.PlaySound("prop_idbs/light_on.wav")
-		CL_GLOBAL_LIGHT_STATE = 1
-	end
-end)
-
--- Turns the dynamic light OFF
-net.Receive("DisableDynamicLight", function()
-	if client_prop_light then
-		client_prop_light = false
-	end
 end)

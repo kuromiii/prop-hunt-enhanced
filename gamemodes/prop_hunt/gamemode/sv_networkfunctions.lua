@@ -3,8 +3,6 @@ util.AddNetworkString("ResetHull")
 util.AddNetworkString("SetBlind")
 util.AddNetworkString("SetHull")
 util.AddNetworkString("PlayFreezeCamSound")
-util.AddNetworkString("PlayerSwitchDynamicLight")
-util.AddNetworkString("DisableDynamicLight")
 util.AddNetworkString("PH_ShowTutor")
 
 util.AddNetworkString("CheckAdminFirst")

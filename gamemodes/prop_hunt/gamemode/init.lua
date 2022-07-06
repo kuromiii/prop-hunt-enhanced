@@ -40,19 +40,19 @@ PHE.UPDATE_CVAR_TO_VARIABLE = 0
 PHE.SPECTATOR_CHECK = 0
 
 -- Player Join/Leave message
-gameevent.Listen( "player_authed" )
-hook.Add( "player_authed", "AnnouncePLJoin", function( data )
-	for k, v in pairs( player.GetAll() ) do
-		v:PrintMessage( HUD_PRINTTALK, data.name .. " has connected to the server." )
+gameevent.Listen("player_authed")
+hook.Add("player_authed", "AnnouncePLJoin", function(data)
+	for k, v in pairs(player.GetAll()) do
+		v:PrintMessage(HUD_PRINTTALK, data.name .. " has connected to the server.")
 	end
-end )
+end)
 
-gameevent.Listen( "player_disconnect" )
-hook.Add( "player_disconnect", "AnnouncePLLeave", function( data )
-	for k,v in pairs( player.GetAll() ) do
-		v:PrintMessage( HUD_PRINTTALK, data.name .. " has left the server (Reason: " .. data.reason .. ")" )
+gameevent.Listen("player_disconnect")
+hook.Add("player_disconnect", "AnnouncePLLeave", function(data)
+	for k,v in pairs(player.GetAll()) do
+		v:PrintMessage(HUD_PRINTTALK, data.name .. " has left the server (Reason: " .. data.reason .. ")")
 	end
-end )
+end)
 
 -- Force Close taunt window function, determined whenever the round ends, or team winning.
 local function ForceCloseTauntWindow(num)
@@ -86,7 +86,7 @@ function GM:CheckPlayerDeathRoundEnd()
 	end
 
 	if table.Count(Teams) == 1 then
-		local TeamID = table.GetFirstKey (Teams)
+		local TeamID = table.GetFirstKey(Teams)
 		-- debug
 		MsgAll("Round Result: " .. team.GetName(TeamID) .. " (" .. TeamID .. ") Wins!\n")
 		-- End Round
@@ -141,7 +141,7 @@ function GM:PlayerCanHearPlayersVoice(listen, speaker)
 	if listen:Team() == TEAM_SPECTATOR && listen:Alive() && speaker:Alive() then return false, false end
 
 	-- This is for ULX "Permanent Gag". Uncomment this if you have some issues.
-	-- if speaker:GetPData( "permgagged" ) == "true" then return false, false end
+	-- if speaker:GetPData("permgagged") == "true" then return false, false end
 
 	-- does return true, true required here?
 end
@@ -149,10 +149,10 @@ end
 -- Control Players Chat
 function GM:PlayerCanSeePlayersChat(txt, onteam, listen, speaker)
 
-	if ( onteam ) then
+	if (onteam) then
 		-- Generic Specific OnTeam chats
-		if ( !IsValid( speaker ) || !IsValid( listen ) ) then return false end
-		if ( listen:Team() != speaker:Team() ) then return false end
+		if (!IsValid(speaker) || !IsValid(listen)) then return false end
+		if (listen:Team() != speaker:Team()) then return false end
 
 		-- ditto, this is same as below.
 		if listen:Alive() && speaker:Alive() then return true end
@@ -167,7 +167,7 @@ function GM:PlayerCanSeePlayersChat(txt, onteam, listen, speaker)
 	if (alltalk_cvar > 0) then return true end
 
 	-- Generic Checks
-	if ( !IsValid( speaker ) || !IsValid( listen ) ) then return false end
+	if (!IsValid(speaker) || !IsValid(listen)) then return false end
 
 	-- Only alive players can see other living players.
 	if listen:Alive() && speaker:Alive() then return true end
@@ -197,7 +197,7 @@ function EntityTakeDamage(ent, dmginfo)
 	-- Code from: https://facepunch.com/showthread.php?t=1500179 , Special thanks from AlcoholicoDrogadicto(http://steamcommunity.com/profiles/76561198082241865/) for suggesting this.
 	if GAMEMODE:InRound() && ent && ent:IsPlayer() && ent:Alive() && ent:Team() == TEAM_PROPS && ent.ph_prop then
 		-- Prevent Prop 'Friendly Fire'
-		if ( dmginfo:GetAttacker():IsPlayer() && dmginfo:GetAttacker():Team() == ent:Team() )
+		if (dmginfo:GetAttacker():IsPlayer() && dmginfo:GetAttacker():Team() == ent:Team())
 			then printVerbose("DMGINFO::ATTACKED!!-> " .. tostring(dmginfo:GetAttacker()) .. ", DMGTYPE: " .. dmginfo:GetDamageType())
 			return
 		end
@@ -489,11 +489,11 @@ hook.Add("AllowPlayerPickup", "PHE.IsHoldingEntity", function(ply,ent)
 end)
 
 -- Spray Controls
-hook.Add( "PlayerSpray", "PH.GeneralSprayFunc", function( ply )
-	if ( ( !ply:Alive() ) || ( ply:Team() == TEAM_SPECTATOR ) ) then
+hook.Add("PlayerSpray", "PH.GeneralSprayFunc", function(ply)
+	if ((!ply:Alive()) || (ply:Team() == TEAM_SPECTATOR)) then
 		return true
 	end
-end )
+end)
 
 -- Called when the players spawns
 function PlayerSpawn(pl)
@@ -510,9 +510,6 @@ function PlayerSpawn(pl)
 	pl.last_taunt_time = 0
 
 	net.Start("ResetHull")
-	net.Send(pl)
-
-	net.Start("DisableDynamicLight")
 	net.Send(pl)
 
 	pl:SetCollisionGroup(COLLISION_GROUP_PASSABLE_DOOR)
@@ -577,9 +574,9 @@ function GM:OnPreRoundStart(num)
 				else
 					pl:SetTeam(TEAM_PROPS)
 					if GetConVar("ph_notice_prop_rotation"):GetBool() then
-						timer.Simple(0.5, function() pl:SendLua( [[notification.AddLegacy("You are in Prop Team with Rotate support! You can rotate the prop around by moving your mouse.", NOTIFY_UNDO, 20 )]] ) end)
-						pl:SendLua( [[notification.AddLegacy("Additionally you can toggle lock rotation by pressing R key!", NOTIFY_GENERIC, 18 )]] )
-						pl:SendLua( [[surface.PlaySound("garrysmod/content_downloaded.wav")]] )
+						timer.Simple(0.5, function() pl:SendLua([[notification.AddLegacy("You are in Prop Team with Rotate support! You can rotate the prop around by moving your mouse.", NOTIFY_UNDO, 20)]]) end)
+						pl:SendLua([[notification.AddLegacy("Additionally you can toggle lock rotation by pressing R key!", NOTIFY_GENERIC, 18)]])
+						pl:SendLua([[surface.PlaySound("garrysmod/content_downloaded.wav")]])
 					end
 				end
 
@@ -645,7 +642,7 @@ hook.Add("PropBreak", "Props_OnBreak_WithDrops", PH_Props_OnBreak)
 -- Force Close the Taunt Menu whenever the prop is being killed.
 function close_PlayerKilledSilently(ply)
 	if ply:Team() == TEAM_PROPS then
-		net.Start( "PH_ForceCloseTauntWindow" )
+		net.Start("PH_ForceCloseTauntWindow")
 		net.Send(ply)
 	end
 end
@@ -655,11 +652,6 @@ hook.Add("PlayerSilentDeath", "SilentDed_ForceClose", close_PlayerKilledSilently
 function GM:PlayerSwitchFlashlight(pl, on)
 	if pl:Alive() && pl:Team() == TEAM_HUNTERS then
 		return true
-	end
-
-	if pl:Alive() && pl:Team() == TEAM_PROPS then
-		net.Start("PlayerSwitchDynamicLight")
-		net.Send(pl)
 	end
 
 	return false
@@ -674,74 +666,66 @@ cvars.AddChangeCallback("ph_min_waitforplayers", function(cvar, old, new)
 end)
 
 local bAlreadyStarted = false
-function GM:OnRoundEnd( num )
+function GM:OnRoundEnd(num)
 	-- Check if GetConVar("ph_waitforplayers"):GetBool() is true
 	-- This is a fast implementation for a waiting system
 	-- Make optimisations if needed
-	if ( GetConVar("ph_waitforplayers"):GetBool() ) then
+	if (GetConVar("ph_waitforplayers"):GetBool()) then
 		-- Take away a round number quickly before it adds another when there are not enough players
 		-- Set to false
-		if ( ( team.NumPlayers( TEAM_HUNTERS ) < GetConVar("ph_min_waitforplayers"):GetInt() ) || ( team.NumPlayers( TEAM_PROPS ) < GetConVar("ph_min_waitforplayers"):GetInt() ) ) then
+		if ((team.NumPlayers(TEAM_HUNTERS) < GetConVar("ph_min_waitforplayers"):GetInt()) || (team.NumPlayers(TEAM_PROPS) < GetConVar("ph_min_waitforplayers"):GetInt())) then
 			bAlreadyStarted = false
 		end
 
 		-- Set to true
-		if ( ( team.NumPlayers( TEAM_HUNTERS ) >= GetConVar("ph_min_waitforplayers"):GetInt() ) && ( team.NumPlayers( TEAM_PROPS ) >= GetConVar("ph_min_waitforplayers"):GetInt() ) ) then
+		if ((team.NumPlayers(TEAM_HUNTERS) >= GetConVar("ph_min_waitforplayers"):GetInt()) && (team.NumPlayers(TEAM_PROPS) >= GetConVar("ph_min_waitforplayers"):GetInt())) then
 			bAlreadyStarted = true
 		end
 
 		-- Check if the round was already started before so we count it as a fully played round
-		if ( !bAlreadyStarted ) then
-			SetGlobalInt( "RoundNumber", GetGlobalInt("RoundNumber") - 1 )
+		if (!bAlreadyStarted) then
+			SetGlobalInt("RoundNumber", GetGlobalInt("RoundNumber") - 1)
 		end
 	end
 
 	hook.Call("PH_OnRoundEnd", nil, num)
-
 end
 
 function GM:RoundStart()
+	local roundNum = GetGlobalInt("RoundNumber");
+	local roundDuration = GAMEMODE:GetRoundTime(roundNum)
 
-	local roundNum = GetGlobalInt( "RoundNumber" );
-	local roundDuration = GAMEMODE:GetRoundTime( roundNum )
+	GAMEMODE:OnRoundStart(roundNum)
 
-	GAMEMODE:OnRoundStart( roundNum )
+	timer.Create("RoundEndTimer", roundDuration, 0, function() GAMEMODE:RoundTimerEnd() end)
+	timer.Create("CheckRoundEnd", 1, 0, function() GAMEMODE:CheckRoundEnd() end)
 
-	timer.Create( "RoundEndTimer", roundDuration, 0, function() GAMEMODE:RoundTimerEnd() end )
-	timer.Create( "CheckRoundEnd", 1, 0, function() GAMEMODE:CheckRoundEnd() end )
-
-	SetGlobalFloat( "RoundEndTime", CurTime() + roundDuration );
+	SetGlobalFloat("RoundEndTime", CurTime() + roundDuration);
 
 	-- Check if GetConVar("ph_waitforplayers"):GetBool() is true
 	-- This is a fast implementation for a waiting system
 	-- Make optimisations if needed
-	if ( GetConVar("ph_waitforplayers"):GetBool() ) then
+	if (GetConVar("ph_waitforplayers"):GetBool()) then
 
 		-- Pause these timers if there are not enough players on the teams in the server
-		if ( ( team.NumPlayers( TEAM_HUNTERS ) < GetConVar("ph_min_waitforplayers"):GetInt() ) || ( team.NumPlayers( TEAM_PROPS ) < GetConVar("ph_min_waitforplayers"):GetInt() ) ) then
+		if ((team.NumPlayers(TEAM_HUNTERS) < GetConVar("ph_min_waitforplayers"):GetInt()) || (team.NumPlayers(TEAM_PROPS) < GetConVar("ph_min_waitforplayers"):GetInt())) then
+			if (timer.Exists("RoundEndTimer") && timer.Exists("CheckRoundEnd")) then
+				timer.Pause("RoundEndTimer")
+				timer.Pause("CheckRoundEnd")
 
-			if ( timer.Exists( "RoundEndTimer" ) && timer.Exists( "CheckRoundEnd" ) ) then
+				SetGlobalFloat("RoundEndTime", -1);
 
-				timer.Pause( "RoundEndTimer" )
-				timer.Pause( "CheckRoundEnd" )
-
-				SetGlobalFloat( "RoundEndTime", -1 );
-
-				PrintMessage( HUD_PRINTTALK, PHE.LANG.CHAT.NOTENOUGHPLYS )
+				PrintMessage(HUD_PRINTTALK, PHE.LANG.CHAT.NOTENOUGHPLYS)
 				-- Reset the team score
 				team.SetScore(TEAM_PROPS, 0)
 				team.SetScore(TEAM_HUNTERS, 0)
 			end
-
 		end
-
 	end
 
 	-- Send this as a global boolean
-	SetGlobalBool( "RoundWaitForPlayers", GetConVar("ph_waitforplayers"):GetBool() )
-
+	SetGlobalBool("RoundWaitForPlayers", GetConVar("ph_waitforplayers"):GetBool())
 	hook.Call("PH_RoundStart", nil)
-
 end
 -- End of Round Control Override
 
