@@ -5,14 +5,11 @@ local function TauntTimeLeft(ply)
 
 	local lastTauntTime = ply:GetNWFloat("LastTauntTime")
 	local nextTauntTime = lastTauntTime + GetConVar("ph_autotaunt_delay"):GetInt()
-	local currentTime = CurTime()
-	return nextTauntTime - currentTime
+	return nextTauntTime - CurTime()
 end
 
 local function AutoTauntThink()
-
 	if GetConVar("ph_autotaunt_enabled"):GetBool() then
-
 		local WHOLE_TAUNTS = PHE:GetAllTeamTaunt(TEAM_PROPS)
 		for _, ply in ipairs(team.GetPlayers(TEAM_PROPS)) do
 			local timeLeft = TauntTimeLeft(ply)
@@ -20,11 +17,10 @@ local function AutoTauntThink()
 			if IsValid(ply) && ply:Alive() && ply:Team() == TEAM_PROPS && timeLeft <= 0 then
 				local rand_taunt = table.Random(WHOLE_TAUNTS)
 				if !isstring(rand_taunt) then rand_taunt = tostring(rand_taunt); end
-				ply:EmitSound(rand_taunt, 100)
+				ply:EmitSound(rand_taunt, 100, math.Rand(75, 135))
 				ply:SetNWFloat("LastTauntTime", CurTime())
 			end
 		end
-
 	end
 end
 timer.Create("AutoTauntThinkTimer", 1, 0, AutoTauntThink)
