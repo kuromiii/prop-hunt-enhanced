@@ -59,12 +59,10 @@ function CLASS:OnSpawn(pl)
 		end
 	end
 
-	if unlock_time > 2 then
+	if unlock_time > 1 then
 		pl:Blind(true)
-
+		timer.Simple(0.1, lockfunc)
 		timer.Simple(unlock_time, unblindfunc)
-
-		timer.Simple(2, lockfunc)
 		timer.Simple(unlock_time, unlockfunc)
 	end
 end
