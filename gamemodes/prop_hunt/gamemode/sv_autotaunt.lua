@@ -1,8 +1,8 @@
 -- Props will autotaunt at specified intervals (put this crap on the server because the old way was all on the client and that's silly)
 local function TauntTimeLeft(ply)
 	-- Always return 1 when the conditions are not met
-	if !IsValid(ply) or !ply:Alive() or ply:Team() != TEAM_PROPS then 
-		return 1 
+	if not IsValid(ply) or not ply:Alive() or ply:Team() != TEAM_PROPS then
+		return 1
 	end
 
 	local lastTauntTime = ply:GetNWFloat("LastTauntTime")

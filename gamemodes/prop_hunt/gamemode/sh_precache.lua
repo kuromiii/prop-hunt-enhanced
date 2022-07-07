@@ -11,8 +11,8 @@ hook.Add("PlayerInitialSpawn", "PHE.PrecacheSoundCore", function()
 
 			printVerbose("[PH:E] Precaching Sound Core...")
 			for _, snd in pairs(wav) do util.PrecacheSound(snd) end
-			for _, snd in pairs(mp3) do util.PrecacheSound(sndm) end
-			for _, snd in pairs(ogg) do util.PrecacheSound(sndm) end
+			for _, snd in pairs(mp3) do util.PrecacheSound(snd) end
+			for _, snd in pairs(ogg) do util.PrecacheSound(snd) end
 		end
 	end
 

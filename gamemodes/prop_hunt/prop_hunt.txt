@@ -3,15 +3,11 @@
 	"base"		"base"
 	"title"		"Prop Hunt"
 	"maps"      "^ph_"
-
-	"fretta_maps"
-        {
-    "1"	  "ph_"
-        }
-        "selectable"            "1"
+    "selectable"            "1"
         
 	"menusystem"	"1"
-	"workshopid"	"1754658833"
+	"workshopid"	"2831915190"
+
 	"settings"
 	{
 		1
@@ -211,5 +207,4 @@
 			"default"	"1"
 		}
 	}
-
 }

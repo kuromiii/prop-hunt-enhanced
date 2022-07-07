@@ -147,17 +147,16 @@ function MapVote.Start(length, current, limit, prefix)
     end
     
 	local maps = {}
-	
+
 	if GetConVar("mv_use_ulx_votemaps"):GetBool() && ulxmap ~= false then
-		for _,map in pairs(ulxmap) do
+		for _, map in pairs(ulxmap) do
 			table.insert(maps, map..".bsp")
 		end
 	else
 		maps = file.Find("maps/*.bsp", "GAME")
 	end
-    
+
     local vote_maps = {}
-    
     local amt = 0
 
     for k, map in RandomPairs(maps) do
@@ -179,36 +178,36 @@ function MapVote.Start(length, current, limit, prefix)
                 end
             end
         end
-        
-        if(limit and amt >= limit) then break end
+
+        if (limit and amt >= limit) then break end
     end
-    
+
     net.Start("RAM_MapVoteStart")
         net.WriteUInt(#vote_maps, 32)
-        
+
         for i = 1, #vote_maps do
             net.WriteString(vote_maps[i])
         end
-        
+
         net.WriteUInt(length, 32)
     net.Broadcast()
-    
+
     MapVote.Allow = true
     MapVote.CurrentMaps = vote_maps
     MapVote.Votes = {}
-    
+
     timer.Create("RAM_MapVote", length, 1, function()
         MapVote.Allow = false
         local map_results = {}
-        
+
         for k, v in pairs(MapVote.Votes) do
-            if (not map_results[v]) then
+            if not map_results[v] then
                 map_results[v] = 0
             end
-            
+
             for k2, v2 in pairs(player.GetAll()) do
-                if (v2:SteamID() == k) then
-                    if (MapVote.HasExtraVotePower(v2)) then
+                if v2:SteamID() == k then
+                    if MapVote.HasExtraVotePower(v2) then
                         map_results[v] = map_results[v] + 2
                     else
                         map_results[v] = map_results[v] + 1
@@ -216,7 +215,7 @@ function MapVote.Start(length, current, limit, prefix)
                 end
             end
         end
-        
+
         CoolDownDoStuff()
 
         local winner = table.GetWinningKey(map_results) or 1
@@ -224,7 +223,7 @@ function MapVote.Start(length, current, limit, prefix)
             net.WriteUInt(MapVote.UPDATE_WIN, 3)
             net.WriteUInt(winner, 32)
         net.Broadcast()
-        
+
         local map = MapVote.CurrentMaps[winner]
         timer.Simple(4, function()
             hook.Run("MapVoteChange", map)

@@ -49,7 +49,7 @@ IncludePlayerClasses()
 GM.Name		= "Prop Hunt: ENHANCED"
 GM.Author	= "Wolvindra-Vinzuerio, D4UNKN0WNM4N2010, Fafy, Dralga & Zero"
 
-GM._VERSION = "16"
+GM._VERSION = "17"
 GM.REVISION	= "A"
 
 -- Format PHE.LANG.Help

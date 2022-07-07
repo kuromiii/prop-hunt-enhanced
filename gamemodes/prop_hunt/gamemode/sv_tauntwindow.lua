@@ -10,12 +10,12 @@ net.Receive("CL2SV_PlayThisTaunt", function(len, ply)
 	local volume = net.ReadUInt(9)
 	local pitch = net.ReadUInt(8)
 
-	if IsValid(ply) and !IsDelayed(ply) then
+	if IsValid(ply) and not IsDelayed(ply) then
 		if file.Exists("sound/" .. snd, "GAME") then
 			ply:EmitSound(snd, volume, pitch)
 			ply:SetNWFloat("LastTauntTime", CurTime())
 		else
-			ply:ChatPrint("[PH: Enhanced] - Warning: That taunt you selected does not exists on server!")
+			ply:ChatPrint("[PH: Enhanced] - Warning: That taunt does not exist on the server!")
 		end
 	else
 		ply:ChatPrint("[PH: Enhanced] - Please wait in few seconds...!")

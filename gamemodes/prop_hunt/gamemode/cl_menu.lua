@@ -343,27 +343,6 @@ function ph_BaseMainWindow(ply, cmd, args)
 		pBottom:SetSize(0,40)
 		pBottom:SetBackgroundColor(Color(0,0,0,0))
 
-		local motd = vgui.Create("DButton", pBottom)
-		motd:Dock(FILL)
-		motd:SetSize(0,40)
-		motd:SetText("SERVER INFORMATION & RULES [MOTD]")
-		motd:SetFont("PHE.ArmorFont")
-		motd:SetTextColor(color_white)
-		motd.hover = { r = 55, g = 55, b = 55}
-		motd.Paint = function(pnl)
-		if pnl:IsHovered() then
-			pnl.hover = { r = 70, g = 70, b = 70}
-		else
-			pnl.hover = { r = 55, g = 55, b = 55}
-		end
-			surface.SetDrawColor(pnl.hover.r,pnl.hover.g,pnl.hover.b,255)
-			surface.DrawRect(0,0,motd:GetWide(),motd:GetTall())
-		end
-		motd.DoClick = function() 
-			ply:ConCommand("ulx motd") 
-			frm:Close() 
-		end
-
 		local bnext = vgui.Create("DButton", pBottom)
 		bnext:Dock(RIGHT)
 		bnext:SetSize(128,40)
@@ -383,7 +362,6 @@ function ph_BaseMainWindow(ply, cmd, args)
 			pnl:SetTextColor(color_white)
 		end
 			surface.SetDrawColor(pnl.hover.r,pnl.hover.g,pnl.hover.b,255)
-			surface.DrawRect(0,0,motd:GetWide(),motd:GetTall())
 		end
 		bnext.DoClick = function(pnl)
 			helpImage.Count = helpImage.Count + 1
@@ -401,18 +379,17 @@ function ph_BaseMainWindow(ply, cmd, args)
 		bprev:SetTextColor(color_white)
 		bprev.hover = { r = 100, g = 100, b = 100}
 		bprev.Paint = function(pnl)
-		if pnl:IsHovered() then
-			pnl.hover = { r = 130, g = 130, b = 130}
-			pnl:SetTextColor(color_white)
-		elseif pnl:GetDisabled() then
-			pnl.hover = { r = 20, g = 20, b = 20}
-			pnl:SetTextColor(Color(40,40,40))
-		else
-			pnl.hover = { r = 100, g = 100, b = 100}
-			pnl:SetTextColor(color_white)
-		end
+			if pnl:IsHovered() then
+				pnl.hover = { r = 130, g = 130, b = 130}
+				pnl:SetTextColor(color_white)
+			elseif pnl:GetDisabled() then
+				pnl.hover = { r = 20, g = 20, b = 20}
+				pnl:SetTextColor(Color(40,40,40))
+			else
+				pnl.hover = { r = 100, g = 100, b = 100}
+				pnl:SetTextColor(color_white)
+			end
 			surface.SetDrawColor(pnl.hover.r,pnl.hover.g,pnl.hover.b,255)
-			surface.DrawRect(0,0,motd:GetWide(),motd:GetTall())
 		end
 		bprev.DoClick = function(pnl)
 			helpImage.Count = helpImage.Count - 1

@@ -192,23 +192,23 @@ PHE.WINNINGSOUNDS = {
 }
 
 local function AddDemTaunt()
-
 	printVerbose("[PH:E Taunts] Initializing Custom Taunts...")
-	for propName,propTaunt in pairs(list.Get("PHE.CustomPropTaunts")) do
+
+	for propName, propTaunt in pairs(list.Get("PHE.CustomPropTaunts")) do
 		printVerbose("[PH:E Taunts] Adding Custom PROP taunts -> " .. propName)
 		PHE.PH_TAUNT_CUSTOM.PROP[propName] = propTaunt
 		if (SERVER) then
 			resource.AddSingleFile("sound/" .. propTaunt)
 		end
 	end
-	for huntName,huntTaunt in pairs(list.Get("PHE.CustomHunterTaunts")) do
+
+	for huntName, huntTaunt in pairs(list.Get("PHE.CustomHunterTaunts")) do
 		printVerbose("[PH:E Taunts] Adding Custom HUNTER taunts -> " .. huntName)
 		PHE.PH_TAUNT_CUSTOM.HUNTER[huntName] = huntTaunt
 		if (SERVER) then
 			resource.AddSingleFile("sound/" .. huntTaunt)
 		end
 	end
-
 end
 hook.Add("Initialize", "PHE.AddTauntTables", AddDemTaunt)
 

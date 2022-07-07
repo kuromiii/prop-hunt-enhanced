@@ -1,5 +1,5 @@
 -- Ship
-resource.AddWorkshop("1754658833")
+resource.AddWorkshop("2831915190")
 
 -- Send required file to clients
 AddCSLuaFile("sh_init.lua")
