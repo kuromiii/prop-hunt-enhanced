@@ -10,9 +10,6 @@ include("sh_convars.lua")
 AddCSLuaFile("sh_language.lua")
 include("sh_language.lua")
 
-AddCSLuaFile("sh_drive_prop.lua")
-include("sh_drive_prop.lua")
-
 -- ULX Mapvote
 AddCSLuaFile("ulx/modules/sh/sh_phe_mapvote.lua")
 include("ulx/modules/sh/sh_phe_mapvote.lua")

@@ -20,7 +20,7 @@ include("sh_config.lua")
 include("sv_admin.lua")
 include("sv_autotaunt.lua")
 include("sv_tauntwindow.lua")
-
+include("sv_drive_prop.lua")
 include("sv_bbox_addition.lua")
 
 -- Server only constants
@@ -55,14 +55,10 @@ hook.Add("player_disconnect", "AnnouncePLLeave", function(data)
 end)
 
 -- Force Close taunt window function, determined whenever the round ends, or team winning.
-local function ForceCloseTauntWindow(num)
-	if num == 1 then
-		net.Start("PH_ForceCloseTauntWindow")
-		net.Broadcast()
-	elseif num == 0 then
-		net.Start("PH_AllowTauntWindow")
-		net.Broadcast()
-	end
+local function ForceCloseTauntWindow(status)
+	net.Start("PH_TauntWindowStatus")
+		net.WriteBool(status)
+	net.Broadcast()
 end
 
 -- Called alot
@@ -76,7 +72,7 @@ function GM:CheckPlayerDeathRoundEnd()
 	if table.Count(Teams) == 0 then
 		GAMEMODE:RoundEndWithResult(1001, PHE.LANG.HUD.DRAW)
 		PHE.VOICE_IS_END_ROUND = 1
-		ForceCloseTauntWindow(1)
+		ForceCloseTauntWindow(true)
 
 		net.Start("PH_RoundDraw_Snd")
 		net.Broadcast()
@@ -92,7 +88,7 @@ function GM:CheckPlayerDeathRoundEnd()
 		-- End Round
 		GAMEMODE:RoundEndWithResult(TeamID, string.format(PHE.LANG.HUD.WIN, team.GetName(TeamID)))
 		PHE.VOICE_IS_END_ROUND = 1
-		ForceCloseTauntWindow(1)
+		ForceCloseTauntWindow(true)
 
 		-- send the win notification
 		if TeamID == TEAM_HUNTERS then
@@ -235,7 +231,7 @@ end
 
 function PH_ResetCustomTauntWindowState()
 	-- Force close any taunt menu windows
-	ForceCloseTauntWindow(0)
+	ForceCloseTauntWindow(false)
 	-- Extra additional
 	PHE.VOICE_IS_END_ROUND = 0
 	-- Reset Player's Height
@@ -284,8 +280,8 @@ end
 -- The [E] & Mouse Click 1 behaviour is now moved in here!
 function GM:PlayerExchangeProp(pl, ent)
 
-	if !IsValid(pl) then return; end
-	if !IsValid(ent) then return; end
+	if !IsValid(pl) then return end
+	if !IsValid(ent) then return end
 
 	if pl:Team() == TEAM_PROPS && pl:IsOnGround() && !pl:Crouching() && table.HasValue(PHE.USABLE_PROP_ENTITIES, ent:GetClass()) && ent:GetModel() then
 		if table.HasValue(PHE.BANNED_PROP_MODELS, ent:GetModel()) then
@@ -375,7 +371,7 @@ end
 
 -- Called when a player tries to use an object. By default this pressed ['E'] button. MouseClick 1 will be mentioned below at line @351
 function GM:PlayerUse(pl, ent)
-	if !pl:Alive() || pl:Team() == TEAM_SPECTATOR || pl:Team() == TEAM_UNASSIGNED then return false; end
+	if !pl:Alive() || pl:Team() == TEAM_SPECTATOR || pl:Team() == TEAM_UNASSIGNED then return false end
 
 	-- Prevent Execution Spam by holding ['E'] button too long.
 	if pl.UseTime <= CurTime() then
@@ -524,7 +520,7 @@ function GM:RoundTimerEnd()
 
 	GAMEMODE:RoundEndWithResult(TEAM_PROPS, string.format(PHE.LANG.HUD.WIN, "Props"))
 	PHE.VOICE_IS_END_ROUND = 1
-	ForceCloseTauntWindow(1)
+	ForceCloseTauntWindow(true)
 
 	net.Start("PH_TeamWinning_Snd")
 		net.WriteString(PHE.WINNINGSOUNDS[TEAM_PROPS])
@@ -614,7 +610,8 @@ hook.Add("PropBreak", "Props_OnBreak_WithDrops", PH_Props_OnBreak)
 -- Force Close the Taunt Menu whenever the prop is being killed.
 function close_PlayerKilledSilently(ply)
 	if ply:Team() == TEAM_PROPS then
-		net.Start("PH_ForceCloseTauntWindow")
+		net.Start("PH_TauntWindowStatus")
+		net.WriteBool(false)
 		net.Send(ply)
 	end
 end
@@ -664,7 +661,7 @@ function GM:OnRoundEnd(num)
 end
 
 function GM:RoundStart()
-	local roundNum = GetGlobalInt("RoundNumber");
+	local roundNum = GetGlobalInt("RoundNumber")
 	local roundDuration = GAMEMODE:GetRoundTime(roundNum)
 
 	GAMEMODE:OnRoundStart(roundNum)
@@ -672,7 +669,7 @@ function GM:RoundStart()
 	timer.Create("RoundEndTimer", roundDuration, 0, function() GAMEMODE:RoundTimerEnd() end)
 	timer.Create("CheckRoundEnd", 1, 0, function() GAMEMODE:CheckRoundEnd() end)
 
-	SetGlobalFloat("RoundEndTime", CurTime() + roundDuration);
+	SetGlobalFloat("RoundEndTime", CurTime() + roundDuration)
 
 	-- Check if GetConVar("ph_waitforplayers"):GetBool() is true
 	-- This is a fast implementation for a waiting system
@@ -685,7 +682,7 @@ function GM:RoundStart()
 				timer.Pause("RoundEndTimer")
 				timer.Pause("CheckRoundEnd")
 
-				SetGlobalFloat("RoundEndTime", -1);
+				SetGlobalFloat("RoundEndTime", -1)
 
 				PrintMessage(HUD_PRINTTALK, PHE.LANG.CHAT.NOTENOUGHPLYS)
 				-- Reset the team score
