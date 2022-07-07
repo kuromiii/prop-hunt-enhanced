@@ -48,10 +48,6 @@ else
 	include("mapvote/cl_mapvote.lua")
 end
 
--- Updates!
-AddCSLuaFile("sh_httpupdates.lua")
-include("sh_httpupdates.lua")
-
 -- Fretta!
 DeriveGamemode("fretta")
 IncludePlayerClasses()
@@ -62,8 +58,6 @@ GM.Author	= "Wolvindra-Vinzuerio, D4UNKN0WNM4N2010, Fafy, Dralga & Zero"
 
 GM._VERSION = "16"
 GM.REVISION	= "A"
-GM.DONATEURL = "https://prophunt.wolvindra.net/?go=donate"
-GM.UPDATEURL = ""
 
 -- Format PHE.LANG.Help
 PHE.LANG.Help = string.format(PHE.LANG.Help, GM._VERSION, GM.REVISION)
@@ -102,8 +96,6 @@ function GM:CreateTeams()
 	team.SetUp(TEAM_PROPS, "Props", Color(255, 60, 60, 255))
 	team.SetSpawnPoint(TEAM_PROPS, {"info_player_terrorist", "info_player_rebel", "info_player_deathmatch", "info_player_allies"})
 	team.SetClass(TEAM_PROPS, {"Prop"})
-
-
 end
 
 -- Check collisions
