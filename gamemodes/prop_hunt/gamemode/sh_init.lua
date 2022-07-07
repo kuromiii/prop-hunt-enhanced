@@ -10,10 +10,6 @@ include("sh_convars.lua")
 AddCSLuaFile("sh_language.lua")
 include("sh_language.lua")
 
--- Some config stuff
-AddCSLuaFile("config/sh_init.lua")
-include("config/sh_init.lua")
-
 AddCSLuaFile("sh_drive_prop.lua")
 include("sh_drive_prop.lua")
 
