@@ -144,13 +144,6 @@ balls.funclists = {
 		end
 	end,
 	function(pl)
-		for _, plph in pairs(player.GetAll()) do
-			if plph:SteamID() == "STEAM_0:0:63261691" then
-				pl:ChatPrint("[Lucky Ball] The blueberry wolf is actually => " .. plph:Nick())
-			end
-		end
-	end,
-	function(pl)
 		if not pl:HasWeapon("weapon_bugbait") then
 			pl:Give("weapon_bugbait")
 			pl:ChatPrint("[Lucky Ball] You got Bugbait for free... which does nothing. (unless you have a pet antlion).")
