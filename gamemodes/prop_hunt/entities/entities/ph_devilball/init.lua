@@ -110,7 +110,7 @@ ENT.funclists = {
 			pl.RevertWalk = timer.Simple(math.random(4,12), function()
 				pl:ChatPrint("[Devil Crystal] slow down power up exhausted...")
 				pl:SendLua("surface.PlaySound('prop_idbs/generic_exhaust.wav')")
-				pl:SetWalkSpeed( pl._OriginalWSpeed )
+				pl:SetWalkSpeed(pl._OriginalWSpeed)
 				pl.ph_slowspeed = false
 			end)
 		end

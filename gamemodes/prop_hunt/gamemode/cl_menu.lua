@@ -34,7 +34,7 @@ function ph_BaseMainWindow(ply, cmd, args)
 		local panel = vgui.Create("DPanel", pTab)
 		panel:SetBackgroundColor(color)
 
-		local scroll = vgui.Create( "DScrollPanel", panel )
+		local scroll = vgui.Create("DScrollPanel", panel)
 		scroll:Dock(FILL)
 
 		local grid = vgui.Create("DGrid", scroll)
@@ -72,8 +72,8 @@ function ph_BaseMainWindow(ply, cmd, args)
 					end
 					if data == "SERVER" then
 						net.Start("SvCommandReq")
-						  net.WriteString(cmd)
-						  net.WriteInt(v,2)
+							net.WriteString(cmd)
+							net.WriteInt(v, 2)
 						net.SendToServer()
 					elseif data == "CLIENT" then
 						RunConsoleCommand(cmd, v)
@@ -176,13 +176,13 @@ function ph_BaseMainWindow(ply, cmd, args)
 					slider:SetValue(math.Round (val, dec))
 					if kind == "SERVER" then
 						net.Start("SvCommandSliderReq")
-						net.WriteString(cmd)
-						net.WriteBool(float)
-						if float then
-							net.WriteFloat(val)
-						else
-							net.WriteInt(slider:GetValue(), 16)
-						end
+							net.WriteString(cmd)
+							net.WriteBool(float)
+							if float then
+								net.WriteFloat(val)
+							else
+								net.WriteInt(slider:GetValue(), 16)
+							end
 						net.SendToServer()
 					elseif kind == "CLIENT" then
 						if float then
@@ -306,8 +306,8 @@ function ph_BaseMainWindow(ply, cmd, args)
 				box.OnSelect = function(this, _, _, choiceData)
 					if data.kind == "SERVER" then
 						net.Start("SvCommandBoxReq")
-						net.WriteString(cmd)
-						net.WriteString(choiceData)
+							net.WriteString(cmd)
+							net.WriteString(choiceData)
 						net.SendToServer()
 					else
 						RunConsoleCommand(cmd, choiceData)
@@ -428,15 +428,15 @@ function ph_BaseMainWindow(ply, cmd, args)
 		function Ph:PlayerModelAdditions()
 
 			-- the Model's DPanel preview. The Pos & Size must be similar as the ModelPreview.
-			local panelpreview = vgui.Create( "DPanel", panel )
+			local panelpreview = vgui.Create("DPanel", panel)
 			panelpreview:Dock(FILL)
 			panelpreview:SetBackgroundColor(Color(120,120,120,100))
 
 			-- Model Preview.
-			local modelPreview = vgui.Create( "DModelPanel", panelpreview )
+			local modelPreview = vgui.Create("DModelPanel", panelpreview)
 			modelPreview:Dock(FILL)
-			modelPreview:SetFOV ( 50 )
-			modelPreview:SetModel ( mdlPath )
+			modelPreview:SetFOV (50)
+			modelPreview:SetModel (mdlPath)
 
 			local slider = vgui.Create("DNumSlider", panelpreview)
 			slider:Dock(BOTTOM)
@@ -451,16 +451,16 @@ function ph_BaseMainWindow(ply, cmd, args)
 				modelPreview:SetFOV(val)
 			end
 
-			local scroll = vgui.Create( "DScrollPanel", panel )
+			local scroll = vgui.Create("DScrollPanel", panel)
 			scroll:Dock(LEFT)
-			scroll:SetSize( 720, 0 )
+			scroll:SetSize(720, 0)
 
 			-- ^dito, grid dimensions 66x66 w/ Coloumn 7.
-			local pnl = vgui.Create( "DGrid", scroll )
+			local pnl = vgui.Create("DGrid", scroll)
 			pnl:Dock(FILL)
-			pnl:SetCols( 10 )
-			pnl:SetColWide( 68 )
-			pnl:SetRowHeight( 68 )
+			pnl:SetCols(10)
+			pnl:SetColWide(68)
+			pnl:SetRowHeight(68)
 
 			local plMode = GetConVar("ph_use_playermodeltype"):GetInt()
 			local plWhich = {
@@ -470,20 +470,18 @@ function ph_BaseMainWindow(ply, cmd, args)
 			if plMode == nil then plWhich = 0 end
 
 			-- Get All Valid Paired Models and sort 'em out.
-			for name, model in SortedPairs( plWhich[plMode] ) do
+			for name, model in SortedPairs(plWhich[plMode]) do
 
 				-- dont forget to cache.
 				util.PrecacheModel(model)
 
-				local icon = vgui.Create( "SpawnIcon" )
+				local icon = vgui.Create("SpawnIcon")
 
 				-- Click functions
 				icon.DoClick = function()
-					surface.PlaySound( "buttons/combine_button3.wav" )
-					RunConsoleCommand( "cl_playermodel", name )
+					surface.PlaySound("buttons/combine_button3.wav")
+					RunConsoleCommand("cl_playermodel", name)
 					modelPreview:SetModel(model)
-					Derma_Query("Model " .. name .. " has been selected and it will be applied after respawn!", "Model Applied",
-						"OK", function() end)
 				end
 
 				-- Right click functions
@@ -491,28 +489,28 @@ function ph_BaseMainWindow(ply, cmd, args)
 					-- Same as above, but they has custom menus once user tries to right click on the models.
 					local menu = DermaMenu()
 					-- if user caught it says 'ERROR' but the model present, refresh it (:RebuildSpawnIcon)
-					menu:AddOption( "Apply Model", function()						surface.PlaySound( "buttons/combine_button3.wav" )
-						RunConsoleCommand( "cl_playermodel", name )
+					menu:AddOption("Apply Model", function()						surface.PlaySound("buttons/combine_button3.wav")
+						RunConsoleCommand("cl_playermodel", name)
 						modelPreview:SetModel(model)
 						Derma_Query("Model " .. name .. " has been selected and it will be applied after respawn!", "Model Applied", "OK", function() end)
 					end):SetIcon("icon16/tick.png")
 					menu:AddSpacer()
-					menu:AddOption( "Refresh Icon", function() icon:RebuildSpawnIcon() end):SetIcon("icon16/arrow_refresh.png")
-					menu:AddOption( "Preview", function() modelPreview:SetModel(model) end):SetIcon("icon16/magnifier.png")
-					menu:AddOption( "Model Information", function()
-						Derma_Message( "Model's name is: " .. name .. "\n \nUsable by: Everyone.", "Model Info", "Close" )
-						end ):SetIcon("icon16/information.png")
+					menu:AddOption("Refresh Icon", function() icon:RebuildSpawnIcon() end):SetIcon("icon16/arrow_refresh.png")
+					menu:AddOption("Preview", function() modelPreview:SetModel(model) end):SetIcon("icon16/magnifier.png")
+					menu:AddOption("Model Information", function()
+						Derma_Message("Model's name is: " .. name .. "\n \nUsable by: Everyone.", "Model Info", "Close")
+						end):SetIcon("icon16/information.png")
 					menu:AddSpacer()
-					menu:AddOption( "Close" ):SetIcon("icon16/cross.png")
+					menu:AddOption("Close"):SetIcon("icon16/cross.png")
 					menu:Open()
 				end
 
 				-- Make sure the user has noticed after choosing a model by indicating from "Borders".
 				icon.PaintOver = function()
-					if ( GetConVar( "cl_playermodel" ):GetString() == name ) then
-						surface.SetDrawColor( Color( 255, 210 + math.sin(RealTime() * 10) * 40, 0 ) )
-						surface.DrawOutlinedRect( 4, 4, icon:GetWide() - 8, icon:GetTall() - 8 )
-						surface.DrawOutlinedRect( 3, 3, icon:GetWide() - 6, icon:GetTall() - 6 )
+					if (GetConVar("cl_playermodel"):GetString() == name) then
+						surface.SetDrawColor(Color(255, 210 + math.sin(RealTime() * 10) * 40, 0))
+						surface.DrawOutlinedRect(4, 4, icon:GetWide() - 8, icon:GetTall() - 8)
+						surface.DrawOutlinedRect(3, 3, icon:GetWide() - 6, icon:GetTall() - 6)
 					end
 				end
 
@@ -533,7 +531,7 @@ function ph_BaseMainWindow(ply, cmd, args)
 			tab:AddSheet(PHE.LANG.PHEMENU.PLAYERMODEL.TAB, panel, "icon16/brick.png")
 		else
 			-- Show small message instead
-			local scroll = vgui.Create( "DScrollPanel", panel )
+			local scroll = vgui.Create("DScrollPanel", panel)
 			scroll:Dock(FILL)
 
 			local gridmdl = vgui.Create("DGrid", scroll)
@@ -564,7 +562,7 @@ function ph_BaseMainWindow(ply, cmd, args)
 		Ph:CreateVGUIType("cl_enable_luckyballs_icon", "check", "CLIENT", gridpl, PHE.LANG.PHEMENU.PLAYER.cl_enable_luckyballs_icon)
 		Ph:CreateVGUIType("cl_enable_devilballs_icon", "check", "CLIENT", gridpl, PHE.LANG.PHEMENU.PLAYER.cl_enable_devilballs_icon)
 		Ph:CreateVGUIType("ph_cl_taunt_key", "binder", "CLIENT", gridpl, PHE.LANG.PHEMENU.PLAYER.ph_cl_taunt_key)
-		Ph:CreateVGUIType("hudspacer","spacer",nil,gridpl,"" )
+		Ph:CreateVGUIType("hudspacer","spacer",nil,gridpl,"")
 		Ph:CreateVGUIType("", "label", false, gridpl, "HUD Settings")
 		Ph:CreateVGUIType("ph_hud_use_new", "check", "CLIENT", gridpl, PHE.LANG.PHEMENU.PLAYER.ph_hud_use_new)
 		Ph:CreateVGUIType("ph_show_tutor_control", "check", "CLIENT", gridpl, PHE.LANG.PHEMENU.PLAYER.ph_show_tutor_control)
@@ -618,7 +616,7 @@ function ph_BaseMainWindow(ply, cmd, args)
 		Ph:CreateVGUIType("ph_autoteambalance", "check", "SERVER", grid, PHE.LANG.PHEMENU.ADMINS.ph_autoteambalance)
 		Ph:CreateVGUIType("", "label", "DermaDefault", grid, PHE.LANG.PHEMENU.ADMINS.ph_allow_prop_pickup)
 		Ph:CreateVGUIType("ph_allow_prop_pickup", "slider", {min = 0, max = 2, init = GetConVar("ph_allow_prop_pickup"):GetInt(), dec = 0, kind = "SERVER"}, grid, PHE.LANG.PHEMENU.ADMINS.ph_allow_prop_pickup)
-		Ph:CreateVGUIType("devspacer","spacer",nil,grid,"" )
+		Ph:CreateVGUIType("devspacer","spacer",nil,grid,"")
 		Ph:CreateVGUIType("ph_notice_prop_rotation", "check", "SERVER", grid, PHE.LANG.PHEMENU.ADMINS.ph_notice_prop_rotation)
 		Ph:CreateVGUIType("ph_prop_camera_collisions", "check", "SERVER", grid, PHE.LANG.PHEMENU.ADMINS.ph_prop_camera_collisions)
 		Ph:CreateVGUIType("ph_freezecam", "check", "SERVER", grid, PHE.LANG.PHEMENU.ADMINS.ph_freezecam)
@@ -646,7 +644,7 @@ function ph_BaseMainWindow(ply, cmd, args)
 				}
 				local function SendTauntCommandState(state)
 					net.Start("SendTauntStateCmd")
-					net.WriteString(tostring(state))
+						net.WriteString(tostring(state))
 					net.SendToServer()
 				end
 
@@ -676,7 +674,7 @@ function ph_BaseMainWindow(ply, cmd, args)
 			end}
 			}
 		}, grid ,"")
-		Ph:CreateVGUIType("devspacer","spacer",nil,grid,"" )
+		Ph:CreateVGUIType("devspacer","spacer",nil,grid,"")
 		Ph:CreateVGUIType("", "label", false, grid, "Developer Options/Experimentals Features")
 		Ph:CreateVGUIType("phe_check_props_boundaries", "check", "SERVER", grid, "[WORK IN PROGRESS] Enable Boundaries Check? This prevents you to get stuck with objects/walls.")
 		Ph:CreateVGUIType("ph_print_verbose", "check", "SERVER", grid, "Developer: Enable verbose information of PH:E events in the console")
@@ -701,10 +699,10 @@ function ph_BaseMainWindow(ply, cmd, args)
 		Ph:CreateVGUIType("mv_timelimit", "slider", {min = 15, max = 90, init = GetConVar("mv_timelimit"):GetInt(), dec = 0, kind = "SERVER"}, grid, PHE.LANG.PHEMENU.MAPVOTE.mv_timelimit)
 		Ph:CreateVGUIType("mv_mapbeforerevote", "slider", 	{min = 1, max = 10, init = GetConVar("mv_mapbeforerevote"):GetInt(), dec = 0, kind = "SERVER"}, grid, PHE.LANG.PHEMENU.MAPVOTE.mv_mapbeforerevote)
 		Ph:CreateVGUIType("mv_rtvcount", "slider", 	{min = 2, max = game.MaxPlayers(), init = GetConVar("mv_rtvcount"):GetInt(), dec = 0, kind = "SERVER"}, grid, PHE.LANG.PHEMENU.MAPVOTE.mv_rtvcount)
-		Ph:CreateVGUIType("s1","spacer",nil,grid,"" )
+		Ph:CreateVGUIType("s1","spacer",nil,grid,"")
 		Ph:CreateVGUIType("", "label", false, grid, PHE.LANG.PHEMENU.MAPVOTE.EXPLANATION1)
 		Ph:CreateVGUIType("", "label", false, grid, PHE.LANG.PHEMENU.MAPVOTE.EXPLANATION2)
-		Ph:CreateVGUIType("s2","spacer",nil,grid,"" )
+		Ph:CreateVGUIType("s2","spacer",nil,grid,"")
 		Ph:CreateVGUIType("", "label", false, grid, PHE.LANG.PHEMENU.MAPVOTE.EXPLANATION3)
 		Ph:CreateVGUIType("", "btn", {max = 2, textdata = {
 			[1] = {PHE.LANG.PHEMENU.MAPVOTE.START, function(self)
@@ -732,4 +730,4 @@ function ph_BaseMainWindow(ply, cmd, args)
 		Ph:MapVoteMenu()
 	end)
 end
-concommand.Add("ph_enhanced_show_help", ph_BaseMainWindow, nil, "Show Prop Hunt: Enhanced Main and Help menus." )
+concommand.Add("ph_enhanced_show_help", ph_BaseMainWindow, nil, "Show Prop Hunt: Enhanced Main and Help menus.")

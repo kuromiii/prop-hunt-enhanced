@@ -257,7 +257,7 @@ function PHE:GetAllTeamTaunt(teamid)
 		return taunt
 	end
 
-	return false
+	return {}
 end
 
 function PHE:GetTeamTaunt(teamid,bCustom)
@@ -266,7 +266,7 @@ function PHE:GetTeamTaunt(teamid,bCustom)
 			if table.Count(PHE.PH_TAUNT_CUSTOM.PROP) > 0 then
 				return PHE.PH_TAUNT_CUSTOM.PROP
 			else
-				return false
+				return {}
 			end
 		else
 			return PHE.PROP_TAUNTS
@@ -278,14 +278,14 @@ function PHE:GetTeamTaunt(teamid,bCustom)
 			if table.Count(PHE.PH_TAUNT_CUSTOM.HUNTER) > 0 then
 				return PHE.PH_TAUNT_CUSTOM.HUNTER
 			else
-				return false
+				return {}
 			end
 		else
 			return PHE.HUNTER_TAUNTS
 		end
 	end
 
-	return false
+	return {}
 end
 
 function PHE:RefreshTauntList()
@@ -332,9 +332,9 @@ concommand.Add("phe_refresh_taunt_list", function() PHE:RefreshTauntList() end, 
 
 -- Add the custom player model bans for props AND prop banned models
 if SERVER then
-	if ( !file.Exists( "phe_config", "DATA" ) ) then
+	if (!file.Exists("phe_config", "DATA")) then
 		printVerbose("[PH: Enhanced] Warning: ./data/phe_config/ does not exist. Creating New One...")
-		file.CreateDir( "phe_config" )
+		file.CreateDir("phe_config")
 	end
 
 	local function AddBadPLModels()
@@ -342,18 +342,18 @@ if SERVER then
 		local dir = "phe_config/prop_plymodel_bans"
 
 		-- Create base config area
-		if ( !file.Exists( dir, "DATA" ) ) then
-			file.CreateDir( dir )
+		if (!file.Exists(dir, "DATA")) then
+			file.CreateDir(dir)
 		end
 
 		-- Create actual config
-		if ( !file.Exists( dir .. "/bans.txt", "DATA" ) ) then
-			file.Write( dir .. "/bans.txt", util.TableToJSON({"models/player.mdl"}, true) )
+		if (!file.Exists(dir .. "/bans.txt", "DATA")) then
+			file.Write(dir .. "/bans.txt", util.TableToJSON({"models/player.mdl"}, true))
 		end
 
-		if ( file.Exists( dir .. "/bans.txt", "DATA" ) ) then
+		if (file.Exists(dir .. "/bans.txt", "DATA")) then
 
-			local PROP_PLMODEL_BANS_READ = util.JSONToTable( file.Read( dir .. "/bans.txt", "DATA" ) )
+			local PROP_PLMODEL_BANS_READ = util.JSONToTable(file.Read(dir .. "/bans.txt", "DATA"))
 
 			-- empty the table instead
 			table.Empty(PHE.PROP_PLMODEL_BANS)
@@ -384,15 +384,15 @@ if SERVER then
 			"models/props/cs_militia/reload_bullet_tray.mdl"
 		}
 
-		if ( !file.Exists(dir, "DATA") ) then
+		if (!file.Exists(dir, "DATA")) then
 			file.CreateDir(dir)
 		end
 
-		if ( !file.Exists(dir .. "/model_bans.txt","DATA") ) then
-			file.Write( dir .. "/model_bans.txt", util.TableToJSON( mdlpermabans, true ))
+		if (!file.Exists(dir .. "/model_bans.txt","DATA")) then
+			file.Write(dir .. "/model_bans.txt", util.TableToJSON(mdlpermabans, true))
 		end
 
-		if ( file.Exists ( dir .. "/model_bans.txt","DATA" ) ) then
+		if (file.Exists (dir .. "/model_bans.txt","DATA")) then
 			local PROP_MODEL_BANS_READ = util.JSONToTable(file.Read(dir .. "/model_bans.txt"))
 			-- empty the tables anyway.
 			table.Empty(PHE.BANNED_PROP_MODELS)
@@ -410,12 +410,3 @@ if SERVER then
 	concommand.Add("phe_refresh_plmodel_ban", AddBadPLModels, nil, "Refresh Server Playermodel Ban Lists, read from prop_plymodel_bans/bans.txt data.", FCVAR_SERVER_CAN_EXECUTE)
 	concommand.Add("phe_refresh_propmodel_ban", AddBannedPropModels, nil, "Refresh Server Prop Models Ban Lists, read from prop_model_bans/model_bans.txt data.", FCVAR_SERVER_CAN_EXECUTE)
 end
-
--- AAAAAAARGGHHHHHH
-function PHE:AAAAAAARGGHHHHHH()
-	print("oh no, it\'s the AAAAAAARGGHHHHHH AAAHHHHHHHHHHHHHHHH!")
-	if CLIENT then
-		surface.PlaySound(PHE.PROP_TAUNTS["DX: AAAAAAARGGHHHHHH"])
-	end
-end
-concommand.Add("aaaaaaargghhhhhh", function() PHE:AAAAAAARGGHHHHHH() end, nil, "The classic AAAAAAARGGHHHHHH from Deus Ex.",0x10)

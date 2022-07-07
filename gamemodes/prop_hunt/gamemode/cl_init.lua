@@ -11,7 +11,7 @@ CreateClientConVar("ph_show_custom_crosshair","1",true,false,"Show custom crossh
 CreateClientConVar("ph_show_tutor_control","1",true,false,"Show 'Prop Gameplay Control' hud on each prop spawns. This only show twice and reset until map changes/user disconnect.")
 CreateClientConVar("ph_cl_taunt_key","95",true,true,"Key to play a random taunt or open the taunts menu depending on server settings.")
 
-surface.CreateFont( "HunterBlindLockFont", {
+surface.CreateFont("HunterBlindLockFont", {
 	font	= "Arial",
 	size	= 14,
 	weight	= 1200,
@@ -168,7 +168,7 @@ function HUDPaint()
 
 	-- Draw Lucky Balls Icon
 	if GetConVar("cl_enable_luckyballs_icon"):GetBool() && LocalPlayer():Team() == TEAM_HUNTERS then
-		local offset = Vector( 0, 0, 45 )
+		local offset = Vector(0, 0, 45)
 
 		local w = ScrW()
 		local h = ScrH()
@@ -184,7 +184,7 @@ function HUDPaint()
 				if ((poscr.x > 32 && poscr.x < (w-43)) && (poscr.y > 32 && poscr.y < (h-38))) then
 					surface.SetDrawColor(255,255,255,255)
 					surface.SetTexture(surface.GetTextureID(mat))
-					surface.DrawTexturedRect( poscr.x-32, poscr.y, 64, 64 )
+					surface.DrawTexturedRect(poscr.x-32, poscr.y, 64, 64)
 				else
 					local r = math.Round(cX / 2)
 					local rad = math.atan2(poscr.y-cY, poscr.x-cX)
@@ -201,7 +201,7 @@ function HUDPaint()
 
 	-- Draw Devil Ball Icon
 	if GetConVar("cl_enable_devilballs_icon"):GetBool() && LocalPlayer():Team() == TEAM_PROPS then
-		local offset = Vector( 0, 0, 35 )
+		local offset = Vector(0, 0, 35)
 
 		local w = ScrW()
 		local h = ScrH()
@@ -217,7 +217,7 @@ function HUDPaint()
 				if ((poscr.x > 32 && poscr.x < (w-43)) && (poscr.y > 32 && poscr.y < (h-38))) then
 					surface.SetDrawColor(255,255,255,255)
 					surface.SetTexture(surface.GetTextureID(dmat))
-					surface.DrawTexturedRect( poscr.x-32, poscr.y, 64, 64 )
+					surface.DrawTexturedRect(poscr.x-32, poscr.y, 64, 64)
 				else
 					local r = math.Round(cX / 2)
 					local rad = math.atan2(poscr.y-cY, poscr.x-cX)
@@ -254,9 +254,9 @@ function HUDPaint()
 		else
 			color = Color(255,255,255,255)
 		end
-		surface.SetDrawColor( color )
-		surface.SetMaterial( crosshair )
-		surface.DrawTexturedRect( ScrW() / 2 - ( 64 / 2 ), ScrH() / 2 - ( 64 / 2 ), 64, 64 )
+		surface.SetDrawColor(color)
+		surface.SetMaterial(crosshair)
+		surface.DrawTexturedRect(ScrW() / 2 - (64 / 2), ScrH() / 2 - (64 / 2), 64, 64)
 	end
 
 	-- The 'You were Killed By' text, or the Freeze Cam text.
@@ -321,16 +321,16 @@ local curshow = 0
 net.Receive("PH_ShowTutor", function()
 	if GetConVar("ph_show_tutor_control"):GetBool() && LocalPlayer():Alive() && !tutormat:IsError () && curshow <= 2 then
 
-			local xNotify = vgui.Create( "DNotify" )
-			xNotify:SetPos( ScrW() - 300 , 60 )
-			xNotify:SetSize( 256, 256 )
+			local xNotify = vgui.Create("DNotify")
+			xNotify:SetPos(ScrW() - 300 , 60)
+			xNotify:SetSize(256, 256)
 			xNotify:SetLife(12)
 
-			local bg = vgui.Create( "DPanel", xNotify )
-			bg:Dock( FILL )
-			bg:SetBackgroundColor( Color( 16, 16, 16, 180 ) )
+			local bg = vgui.Create("DPanel", xNotify)
+			bg:Dock(FILL)
+			bg:SetBackgroundColor(Color(16, 16, 16, 180))
 
-			local image = vgui.Create( "DImage", bg )
+			local image = vgui.Create("DImage", bg)
 			image:SetMaterial(tutormat)
 			image:Dock(FILL)
 

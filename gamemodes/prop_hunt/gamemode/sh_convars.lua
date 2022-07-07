@@ -1,14 +1,33 @@
--- PROP HUNT: ENHANCED CONVARS
+local function CreateReplConVar(cvarname, cvarvalue, description, ...)
+	return CreateConVar(cvarname, cvarvalue, CLIENT and {FCVAR_REPLICATED} or {FCVAR_REPLICATED, FCVAR_ARCHIVE, FCVAR_NOTIFY}, description, ...)
+end -- replicated only on clients, archive/notify on server
+
 -- Playermodels controls convars
-local mdlprop 	= CreateConVar("ph_use_custom_plmodel_for_prop", "0", { FCVAR_SERVER_CAN_EXECUTE, FCVAR_REPLICATED, FCVAR_ARCHIVE, FCVAR_NOTIFY }, "Should use a custom Player's Model for Props when the round begins?")
-local mdlenable = CreateConVar("ph_use_custom_plmodel", "0", { FCVAR_SERVER_CAN_EXECUTE, FCVAR_REPLICATED, FCVAR_ARCHIVE, FCVAR_NOTIFY }, "Should use a custom player model available for Hunters?\nPlease note that you must have to activate \'ph_use_custom_plmodel_for_prop\' too!")
+if GetConVar("ph_use_custom_plmodel_for_prop") == nil then
+	CreateReplConVar("ph_use_custom_plmodel_for_prop", "0", "Should use a custom Player's Model for Props when the round begins?")
+end
+
+if GetConVar("ph_use_custom_plmodel") == nil then
+	CreateReplConVar("ph_use_custom_plmodel", "0", "Should use a custom player model available for Hunters?\nPlease note that you must have to activate \'ph_use_custom_plmodel_for_prop\' too!")
+end
+
 -- Tutorial for ph_use_playermodeltype can be found under FAQ.
-local mdltype	= CreateConVar("ph_use_playermodeltype", "0", {FCVAR_REPLICATED, FCVAR_ARCHIVE, FCVAR_NOTIFY}, "Which model list that should deliver from? 0 = All Playermodels availale, 1 = Use Legacy method: list.Get('PlayerOptionsModel') (Recommended if you want to custom your model list)")
+if GetConVar("ph_use_playermodeltype") == nil then
+	CreateReplConVar("ph_use_playermodeltype", "0", "Which model list that should deliver from? 0 = All Playermodels availale, 1 = Use Legacy method: list.Get('PlayerOptionsModel') (Recommended if you want to custom your model list)")
+end
 
 -- Enhanced Prop Hunt specify convars
-local cmcoll	= CreateConVar("ph_prop_camera_collisions", "0", { FCVAR_SERVER_CAN_EXECUTE, FCVAR_REPLICATED, FCVAR_ARCHIVE, FCVAR_NOTIFY }, "Attempts to stop props from viewing inside walls.")
-local fcam		= CreateConVar("ph_freezecam", "1", { FCVAR_SERVER_CAN_EXECUTE, FCVAR_REPLICATED, FCVAR_ARCHIVE, FCVAR_NOTIFY }, "Freeze Camera.")
-local propcoll	= CreateConVar("ph_prop_collision", "0", { FCVAR_SERVER_CAN_EXECUTE, FCVAR_REPLICATED, FCVAR_ARCHIVE, FCVAR_NOTIFY }, "Should Team Props collide with each other?")
+if GetConVar("ph_prop_camera_collisions") == nil then
+	CreateReplConVar("ph_prop_camera_collisions", "0", "Attempts to stop props from viewing inside walls.")
+end
+
+if GetConVar("ph_freezecam") == nil then
+	CreateReplConVar("ph_freezecam", "1", "Freeze Camera.")
+end
+
+if GetConVar("ph_prop_collision") == nil then
+	CreateReplConVar("ph_prop_collision", "0", "Should Team Props collide with each other?")
+end
 
 -- Custom Taunts ConVars
 local ct_delay	= CreateConVar("ph_customtaunts_delay", "6", { FCVAR_SERVER_CAN_EXECUTE, FCVAR_REPLICATED, FCVAR_ARCHIVE, FCVAR_NOTIFY }, "How many in seconds delay for props to play custom taunt again? (Default is 6)")
@@ -46,8 +65,8 @@ local round_time = CreateConVar("ph_round_time", "300", { FCVAR_SERVER_CAN_EXECU
 local round_map	= CreateConVar("ph_rounds_per_map", "10", { FCVAR_SERVER_CAN_EXECUTE, FCVAR_REPLICATED, FCVAR_ARCHIVE, FCVAR_NOTIFY }, "Numbers played on a map (Default: 10)")
 
 -- Round Control
-local wait_pl	= CreateConVar( "ph_waitforplayers", "1", { FCVAR_SERVER_CAN_EXECUTE, FCVAR_REPLICATED, FCVAR_ARCHIVE, FCVAR_NOTIFY }, "Should we wait for players for proper round?" )
-local wait_pl_min = CreateConVar( "ph_min_waitforplayers", "1", { FCVAR_SERVER_CAN_EXECUTE, FCVAR_REPLICATED, FCVAR_ARCHIVE }, "Numbers of mininum players that we should wait for round start. Value must not contain less than 1." )
+local wait_pl	= CreateConVar("ph_waitforplayers", "1", { FCVAR_SERVER_CAN_EXECUTE, FCVAR_REPLICATED, FCVAR_ARCHIVE, FCVAR_NOTIFY }, "Should we wait for players for proper round?")
+local wait_pl_min = CreateConVar("ph_min_waitforplayers", "1", { FCVAR_SERVER_CAN_EXECUTE, FCVAR_REPLICATED, FCVAR_ARCHIVE }, "Numbers of mininum players that we should wait for round start. Value must not contain less than 1.")
 
 -- Verbose mode & Function
 local verbose	= CreateConVar("ph_print_verbose", "0", { FCVAR_SERVER_CAN_EXECUTE, FCVAR_REPLICATED, FCVAR_ARCHIVE }, "Developer Verbose. Some printed messages will only appear if this is enabled.")

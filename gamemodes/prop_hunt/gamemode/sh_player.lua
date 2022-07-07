@@ -31,13 +31,13 @@ function Player:Blind(bool)
 
 	if SERVER then
 		net.Start("SetBlind")
-		if bool then
-			net.WriteBool(true)
-			self:SetNWBool("isBlind", true)
-		else
-			net.WriteBool(false)
-			self:SetNWBool("isBlind", false)
-		end
+			if bool then
+				net.WriteBool(true)
+				self:SetNWBool("isBlind", true)
+			else
+				net.WriteBool(false)
+				self:SetNWBool("isBlind", false)
+			end
 		net.Send(self)
 	elseif CLIENT then
 		blind = bool

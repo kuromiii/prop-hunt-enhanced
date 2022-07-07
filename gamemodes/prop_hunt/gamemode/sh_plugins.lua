@@ -26,7 +26,7 @@ if CLIENT then
 		main.panel:SetSize(tab:GetWide(),tab:GetTall())
 		main.panel:SetBackgroundColor(Color(40,40,40,120))
 
-		main.scroll = vgui.Create( "DScrollPanel", main.panel )
+		main.scroll = vgui.Create("DScrollPanel", main.panel)
 		main.scroll:Dock(FILL)
 
 		main.grid = vgui.Create("DGrid", main.scroll)
@@ -76,18 +76,18 @@ if CLIENT then
 				section.grid:SetColWide(800)
 				section.grid:SetRowHeight(40)
 
-				pVgui("","label","Trebuchet24",section.grid, Data.name .. "| v." .. Data.version )
-				pVgui("","label",false,section.grid, "Description: " .. Data.info )
+				pVgui("","label","Trebuchet24",section.grid, Data.name .. "| v." .. Data.version)
+				pVgui("","label",false,section.grid, "Description: " .. Data.info)
 				if (LocalPlayer():IsSuperAdmin() || table.HasValue(PHE.SVAdmins, LocalPlayer():GetUserGroup())) then
 					if table.Count(Data.settings) > 0 then
-						pVgui("","label",false,section.grid, "-- Server Settings --" )
+						pVgui("","label",false,section.grid, "-- Server Settings --")
 						for _,val in pairs(Data.settings) do
 							pVgui(val[1],val[2],val[3],section.grid,val[4])
 						end
 					end
 				end
 				if table.Count(Data.client) > 0 then
-					pVgui("","label",false,section.grid, "-- Client Settings --" )
+					pVgui("","label",false,section.grid, "-- Client Settings --")
 					for _,val in pairs(Data.client) do
 						pVgui(val[1],val[2],val[3],section.grid,val[4])
 					end

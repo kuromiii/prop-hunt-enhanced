@@ -27,7 +27,7 @@ net.Receive("RAM_MapVoteUpdate", function(len, ply)
     end
 end)
 
-if file.Exists( "mapvote/recentmaps.txt", "DATA" ) then
+if file.Exists("mapvote/recentmaps.txt", "DATA") then
     recentmaps = util.JSONToTable(file.Read("mapvote/recentmaps.txt", "DATA"))
 else
     recentmaps = {}
@@ -202,36 +202,30 @@ function MapVote.Start(length, current, limit, prefix)
         local map_results = {}
         
         for k, v in pairs(MapVote.Votes) do
-            if(not map_results[v]) then
+            if (not map_results[v]) then
                 map_results[v] = 0
             end
             
             for k2, v2 in pairs(player.GetAll()) do
-                if(v2:SteamID() == k) then
-                    if(MapVote.HasExtraVotePower(v2)) then
+                if (v2:SteamID() == k) then
+                    if (MapVote.HasExtraVotePower(v2)) then
                         map_results[v] = map_results[v] + 2
                     else
                         map_results[v] = map_results[v] + 1
                     end
                 end
             end
-            
         end
         
         CoolDownDoStuff()
 
         local winner = table.GetWinningKey(map_results) or 1
-        
         net.Start("RAM_MapVoteUpdate")
             net.WriteUInt(MapVote.UPDATE_WIN, 3)
-            
             net.WriteUInt(winner, 32)
         net.Broadcast()
         
         local map = MapVote.CurrentMaps[winner]
-
-        
-        
         timer.Simple(4, function()
             hook.Run("MapVoteChange", map)
             RunConsoleCommand("changelevel", map)
@@ -239,11 +233,11 @@ function MapVote.Start(length, current, limit, prefix)
     end)
 end
 
-hook.Add( "Shutdown", "RemoveRecentMaps", function()
-        if file.Exists( "mapvote/recentmaps.txt", "DATA" ) then
-            file.Delete( "mapvote/recentmaps.txt" )
-        end
-end )
+hook.Add("Shutdown", "RemoveRecentMaps", function()
+    if file.Exists("mapvote/recentmaps.txt", "DATA") then
+        file.Delete("mapvote/recentmaps.txt")
+    end
+end)
 
 function MapVote.Cancel()
     if MapVote.Allow then
@@ -252,6 +246,6 @@ function MapVote.Cancel()
         net.Start("RAM_MapVoteCancel")
         net.Broadcast()
 
-        timer.Destroy("RAM_MapVote")
+        timer.Remove("RAM_MapVote")
     end
 end

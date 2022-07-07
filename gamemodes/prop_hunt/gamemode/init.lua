@@ -97,11 +97,11 @@ function GM:CheckPlayerDeathRoundEnd()
 		-- send the win notification
 		if TeamID == TEAM_HUNTERS then
 			net.Start("PH_TeamWinning_Snd")
-			net.WriteString(PHE.WINNINGSOUNDS[TEAM_HUNTERS])
+				net.WriteString(PHE.WINNINGSOUNDS[TEAM_HUNTERS])
 			net.Broadcast()
 		elseif TeamID == TEAM_PROPS then
 			net.Start("PH_TeamWinning_Snd")
-			net.WriteString(PHE.WINNINGSOUNDS[TEAM_PROPS])
+				net.WriteString(PHE.WINNINGSOUNDS[TEAM_PROPS])
 			net.Broadcast()
 		end
 
@@ -408,34 +408,6 @@ function GM:PlayerUse(pl, ent)
 	return true
 end
 
-net.Receive("CL2SV_ExchangeProp", function(len, ply)
-	ply:PrintMessage(HUD_PRINTCONSOLE, "-=* NOTICE *=-")
-	ply:PrintMessage(HUD_PRINTCONSOLE, "Hello! We've noticed you tried using the \"CL2SV_ExchangeProp\" net message.")
-	ply:PrintMessage(HUD_PRINTCONSOLE, "Sad news is that this net message is no longer used (due to exploits). Shame, isn't it?")
-	ply:PrintMessage(HUD_PRINTCONSOLE, "")
-	ply:PrintMessage(HUD_PRINTCONSOLE, "This net message will still respond, but you will receive this message instead.")
-	ply:PrintMessage(HUD_PRINTCONSOLE, "-=* NOTICE *=-")
-
-	--[[
-	if ply.UseTime <= CurTime() then
-	
-		if !ply:IsHoldingEntity() then
-			local hmx,hz = Prop:GetPropSize()
-			if (GetConVar("phe_check_props_boundaries"):GetBool() && !ply:CheckHull(hmx,hmx,hz)) then
-				ply:SendLua("chat.AddText(Color(235,10,15), \"[PH: Enhanced]\", Color(220,220,220), \" There is no room to change that prop!\")")
-			else
-				GAMEMODE:PlayerExchangeProp(ply, Prop)
-			end
-		end
-		
-		ply.UseTime = CurTime() + 1
-		
-	end
-	]]
-
-	-- OBSOLETE : THIS IS COMMENTED OUT BECAUSE THIS METHOD IS SILLY AND SHOULD NOT BE USED. --yeah kind of my fault! >.<
-end)
-
 function DoPlayerTaunt(pl)
 	if (GetConVar("ph_enable_custom_taunts"):GetInt() == 1) && GAMEMODE:InRound() then
 		pl:ConCommand("ph_showtaunts")
@@ -555,7 +527,7 @@ function GM:RoundTimerEnd()
 	ForceCloseTauntWindow(1)
 
 	net.Start("PH_TeamWinning_Snd")
-	net.WriteString(PHE.WINNINGSOUNDS[TEAM_PROPS])
+		net.WriteString(PHE.WINNINGSOUNDS[TEAM_PROPS])
 	net.Broadcast()
 
 	hook.Call("PH_OnTimerEnd", nil)

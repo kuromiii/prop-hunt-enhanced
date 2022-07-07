@@ -1,15 +1,11 @@
--- Create new class
 local CLASS = {}
 
-
--- Some settings for the class
 CLASS.DisplayName			= "Hunter"
 CLASS.WalkSpeed 			= 230
 CLASS.CrouchedWalkSpeed 	= 0.4
 CLASS.RunSpeed				= 290
 CLASS.DuckSpeed				= 0.2
 CLASS.DrawTeamRing			= false
-
 
 -- Called by spawn and sets loadout
 function CLASS:Loadout(pl)
@@ -23,12 +19,11 @@ function CLASS:Loadout(pl)
 	pl:Give("weapon_357")
 
 	-- Grenades are an item, so ge have to loop to give multiple times
-	for i = 1, math.min (GetConVar ("ph_hunter_smg_grenades"):GetInt (), 50) do
+	for i = 1, math.min(GetConVar("ph_hunter_smg_grenades"):GetInt(), 50) do
 		pl:Give("item_ar2_grenade")
 	end
 
 	local cl_defaultweapon = pl:GetInfo("cl_defaultweapon")
-
 	if pl:HasWeapon(cl_defaultweapon) then
 		pl:SelectWeapon(cl_defaultweapon)
 	end
@@ -72,9 +67,7 @@ function CLASS:OnSpawn(pl)
 		timer.Simple(2, lockfunc)
 		timer.Simple(unlock_time, unlockfunc)
 	end
-
 end
-
 
 -- Hands
 function CLASS:GetHandsModel()
@@ -82,7 +75,6 @@ function CLASS:GetHandsModel()
 		return { model = "models/weapons/c_arms_combine.mdl", skin = 1, body = "0100000" }
 	end
 end
-
 
 -- Called when a player dies with this class
 function CLASS:OnDeath(pl, attacker, dmginfo)
@@ -95,16 +87,13 @@ function CLASS:OnDeath(pl, attacker, dmginfo)
 
 	-- Spawn Devil Ball
 	local pos = pl:GetPos()
-	if GetConVar("ph_enable_devil_balls"):GetBool() then
-		if math.random() < 0.7 then --70% chance.
-			local dropent = ents.Create("ph_devilball")
-			dropent:SetPos(Vector(pos.x, pos.y, pos.z + 16)) -- to make sure the Devil Ball didn't fall underground.
-			dropent:SetAngles(Angle(0,0,0))
-			dropent:Spawn()
-		end
+	if GetConVar("ph_enable_devil_balls"):GetBool() && math.random() < 0.7 then
+		local dropent = ents.Create("ph_devilball")
+		dropent:SetPos(Vector(pos.x, pos.y, pos.z + 16)) -- to make sure the Devil Ball didn't fall underground.
+		dropent:SetAngles(Angle(0,0,0))
+		dropent:Spawn()
 	end
 end
-
 
 -- Register
 player_class.Register("Hunter", CLASS)

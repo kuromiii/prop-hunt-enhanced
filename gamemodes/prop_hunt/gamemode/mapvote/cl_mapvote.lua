@@ -14,8 +14,8 @@ surface.CreateFont("RAM_VoteFontCountdown", {
     shadow = true
 })
 
-surface.CreateFont("RAM_VoteSysButton", 
-{    font = "Marlett",
+surface.CreateFont("RAM_VoteSysButton", {
+    font = "Marlett",
     size = 13,
     weight = 0,
     symbol = true,
@@ -28,41 +28,40 @@ net.Receive("RAM_MapVoteStart", function()
     MapVote.CurrentMaps = {}
     MapVote.Allow = true
     MapVote.Votes = {}
-    
+
     local amt = net.ReadUInt(32)
-    
+
     for i = 1, amt do
         local map = net.ReadString()
-        
         MapVote.CurrentMaps[#MapVote.CurrentMaps + 1] = map
     end
-    
+
     MapVote.EndTime = CurTime() + net.ReadUInt(32)
-    
-    if(IsValid(MapVote.Panel)) then
+
+    if (IsValid(MapVote.Panel)) then
         MapVote.Panel:Remove()
     end
-    
+
     MapVote.Panel = vgui.Create("VoteScreen")
     MapVote.Panel:SetMaps(MapVote.CurrentMaps)
 end)
 
 net.Receive("RAM_MapVoteUpdate", function()
     local update_type = net.ReadUInt(3)
-    
-    if(update_type == MapVote.UPDATE_VOTE) then
+
+    if update_type == MapVote.UPDATE_VOTE then
         local ply = net.ReadEntity()
-        
-        if(IsValid(ply)) then
+
+        if IsValid(ply) then
             local map_id = net.ReadUInt(32)
             MapVote.Votes[ply:SteamID()] = map_id
-        
-            if(IsValid(MapVote.Panel)) then
+
+            if IsValid(MapVote.Panel) then
                 MapVote.Panel:AddVoter(ply)
             end
         end
-    elseif(update_type == MapVote.UPDATE_WIN) then      
-        if(IsValid(MapVote.Panel)) then
+    elseif update_type == MapVote.UPDATE_WIN then
+        if IsValid(MapVote.Panel) then
             MapVote.Panel:Flash(net.ReadUInt(32))
         end
     end
@@ -75,31 +74,31 @@ net.Receive("RAM_MapVoteCancel", function()
 end)
 
 net.Receive("RTV_Delay", function()
-    chat.AddText(Color( 102,255,51 ), "[RTV]", Color( 255,255,255 ), " The vote has been rocked, map vote will begin on round end")
+    chat.AddText(Color(102,255,51), "[RTV]", Color(255,255,255), " The vote has been rocked, map vote will begin on round end")
 end)
 
 local PANEL = {}
 
 function PANEL:Init()
     self:ParentToHUD()
-    
+
     self.Canvas = vgui.Create("Panel", self)
     self.Canvas:MakePopup()
     self.Canvas:SetKeyboardInputEnabled(false)
-    
+
     self.countDown = vgui.Create("DLabel", self.Canvas)
     self.countDown:SetTextColor(color_white)
     self.countDown:SetFont("RAM_VoteFontCountdown")
     self.countDown:SetText("")
     self.countDown:SetPos(0, 14)
-    
+
     self.mapList = vgui.Create("DPanelList", self.Canvas)
     self.mapList:SetDrawBackground(false)
     self.mapList:SetSpacing(4)
     self.mapList:SetPadding(4)
     self.mapList:EnableHorizontal(true)
     self.mapList:EnableVerticalScrollbar()
-    
+
     self.closeButton = vgui.Create("DButton", self.Canvas)
     self.closeButton:SetText("")
 
@@ -132,20 +131,17 @@ function PANEL:Init()
 end
 
 function PANEL:PerformLayout()
-    local cx, cy = chat.GetChatBoxPos()
-    
     self:SetPos(0, 0)
     self:SetSize(ScrW(), ScrH())
-    
+
     local extra = math.Clamp(300, 0, ScrW() - 640)
     self.Canvas:StretchToParent(0, 0, 0, 0)
     self.Canvas:SetWide(640 + extra)
-    // self.Canvas:SetTall(cy -60)
-	self.Canvas:SetTall(640)
+    self.Canvas:SetTall(640)
     self.Canvas:SetPos(0, 0)
     self.Canvas:CenterHorizontal()
     self.Canvas:SetZPos(0)
-    
+
     self.mapList:StretchToParent(0, 90, 0, 0)
 
     local buttonPos = 640 + extra - 31 * 3
@@ -161,21 +157,17 @@ function PANEL:PerformLayout()
     self.minimButton:SetPos(buttonPos - 31 * 2, 4)
     self.minimButton:SetSize(31, 31)
     self.minimButton:SetVisible(true)
-    
 end
 
-local heart_mat = Material("icon16/heart.png")
 local star_mat = Material("icon16/star.png")
-local shield_mat = Material("icon16/shield.png")
 
 function PANEL:AddVoter(voter)
     for k, v in pairs(self.Voters) do
-        if(v.Player and v.Player == voter) then
+        if (v.Player and v.Player == voter) then
             return false
         end
     end
-    
-    
+
     local icon_container = vgui.Create("Panel", self.mapList:GetCanvas())
     local icon = vgui.Create("AvatarImage", icon_container)
     icon:SetSize(16, 16)
@@ -193,17 +185,17 @@ function PANEL:AddVoter(voter)
         icon_container:SetSize(20, 20)
         icon:SetPos(2, 2)
     end
-    
+
     icon_container.Paint = function(s, w, h)
         draw.RoundedBox(4, 0, 0, w, h, Color(255, 0, 0, 80))
-        
-        if(icon_container.img) then
+
+        if icon_container.img then
             surface.SetMaterial(icon_container.img)
             surface.SetDrawColor(Color(255, 255, 255))
             surface.DrawTexturedRect(2, 2, 16, 16)
         end
     end
-    
+
     table.insert(self.Voters, icon_container)
 end
 
@@ -211,7 +203,7 @@ function PANEL:Think()
     for k, v in pairs(self.mapList:GetItems()) do
         v.NumVotes = 0
     end
-    
+
     for k, v in pairs(self.Voters) do
         if(not IsValid(v.Player)) then
             v:Remove()
@@ -301,12 +293,7 @@ function PANEL:GetMapButton(id)
     return false
 end
 
-function PANEL:Paint()
-    --Derma_DrawBackgroundBlur(self)
-    
-    local CenterY = ScrH() / 2
-    local CenterX = ScrW() / 2
-    
+function PANEL:Paint()    
     surface.SetDrawColor(0, 0, 0, 200)
     surface.DrawRect(0, 0, ScrW(), ScrH())
 end
@@ -317,12 +304,12 @@ function PANEL:Flash(id)
     local bar = self:GetMapButton(id)
     
     if(IsValid(bar)) then
-        timer.Simple( 0.0, function() bar.bgColor = Color( 0, 255, 255 ) surface.PlaySound( "hl1/fvox/blip.wav" ) end )
-        timer.Simple( 0.2, function() bar.bgColor = nil end )
-        timer.Simple( 0.4, function() bar.bgColor = Color( 0, 255, 255 ) surface.PlaySound( "hl1/fvox/blip.wav" ) end )
-        timer.Simple( 0.6, function() bar.bgColor = nil end )
-        timer.Simple( 0.8, function() bar.bgColor = Color( 0, 255, 255 ) surface.PlaySound( "hl1/fvox/blip.wav" ) end )
-        timer.Simple( 1.0, function() bar.bgColor = Color( 100, 100, 100 ) end )
+        timer.Simple(0.0, function() bar.bgColor = Color(0, 255, 255) surface.PlaySound("hl1/fvox/blip.wav") end)
+        timer.Simple(0.2, function() bar.bgColor = nil end)
+        timer.Simple(0.4, function() bar.bgColor = Color(0, 255, 255) surface.PlaySound("hl1/fvox/blip.wav") end)
+        timer.Simple(0.6, function() bar.bgColor = nil end)
+        timer.Simple(0.8, function() bar.bgColor = Color(0, 255, 255) surface.PlaySound("hl1/fvox/blip.wav") end)
+        timer.Simple(1.0, function() bar.bgColor = Color(100, 100, 100) end)
     end
 end
 

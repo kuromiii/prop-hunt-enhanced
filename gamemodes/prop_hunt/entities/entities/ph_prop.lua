@@ -80,11 +80,9 @@ if SERVER then
 				end
 
 				net.Start("PlayerKilledByPlayer")
-
-				net.WriteEntity(pl)
-				net.WriteString(inflictor:GetClass())
-				net.WriteEntity(attacker)
-
+					net.WriteEntity(pl)
+					net.WriteString(inflictor:GetClass())
+					net.WriteEntity(attacker)
 				net.Broadcast()
 
 				MsgAll(attacker:Name() .. " found and killed " .. pl:Name() .. "\n")

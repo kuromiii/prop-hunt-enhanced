@@ -1,17 +1,17 @@
 -- Credit goes to this topic:
 -- https://gmod.facepunch.com/f/gmoddev/ngzz/Circle-avatars/1/
 
-local function MakeCirclePoly( _x, _y, _r, _points )
-    local _u = ( _x + _r * 320 ) - _x;
-    local _v = ( _y + _r * 320 ) - _y;
+local function MakeCirclePoly(_x, _y, _r, _points)
+    local _u = (_x + _r * 320) - _x;
+    local _v = (_y + _r * 320) - _y;
 
-    local _slices = ( 2 * math.pi ) / _points;
+    local _slices = (2 * math.pi) / _points;
     local _poly = { };
     for i = 0, _points - 1 do
-        local _angle = ( _slices * i ) % _points;
-        local x = _x + _r * math.cos( _angle );
-        local y = _y + _r * math.sin( _angle );
-        table.insert( _poly, { x = x, y = y, u = _u, v = _v } )
+        local _angle = (_slices * i) % _points;
+        local x = _x + _r * math.cos(_angle);
+        local y = _y + _r * math.sin(_angle);
+        table.insert(_poly, { x = x, y = y, u = _u, v = _v })
     end
 
     return _poly;
@@ -22,7 +22,7 @@ local PANEL = {}
 function PANEL:Init()
     self.Avatar = vgui.Create("AvatarImage", self)
     self.Avatar:SetPaintedManually(true)
-    self.material = Material( "effects/flashlight001" )
+    self.material = Material("effects/flashlight001")
     self:OnSizeChanged(self:GetWide(), self:GetTall())
 end
 
@@ -58,11 +58,11 @@ function PANEL:Paint(w, h)
     render.SetStencilWriteMask(1)
     render.SetStencilTestMask(1)
 
-    render.SetStencilFailOperation( STENCILOPERATION_REPLACE )
-    render.SetStencilPassOperation( STENCILOPERATION_ZERO )
-    render.SetStencilZFailOperation( STENCILOPERATION_ZERO )
-    render.SetStencilCompareFunction( STENCILCOMPARISONFUNCTION_NEVER )
-    render.SetStencilReferenceValue( 1 )
+    render.SetStencilFailOperation(STENCILOPERATION_REPLACE)
+    render.SetStencilPassOperation(STENCILOPERATION_ZERO)
+    render.SetStencilZFailOperation(STENCILOPERATION_ZERO)
+    render.SetStencilCompareFunction(STENCILCOMPARISONFUNCTION_NEVER)
+    render.SetStencilReferenceValue(1)
 
     self:DrawMask(w, h)
 
