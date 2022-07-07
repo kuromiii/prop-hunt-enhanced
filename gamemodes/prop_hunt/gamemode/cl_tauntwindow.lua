@@ -1,22 +1,10 @@
-surface.CreateFont("PHE.TauntFont", {
-	font = "Roboto",
-	size = 16,
-	weight = 500,
-	antialias = true,
-	shadow = false
-})
-
 local isplayed = false
 local isopened = false
 local isforcedclose = false
 local hastaunt = false
 
-net.Receive("PH_ForceCloseTauntWindow", function()
-	isforcedclose = true
-end)
-
-net.Receive("PH_AllowTauntWindow", function()
-	isforcedclose = false
+net.Receive("PH_TauntWindowStatus", function()
+	isforcedclose = net.ReadBool()
 end)
 
 local function MainFrame()
@@ -185,13 +173,13 @@ local function MainFrame()
 
 	local function SendToServer(snd)
 		if !isplayed then
-			net.Start("CL2SV_PlayThisTaunt"); 
-				net.WriteString(tostring(snd));
+			net.Start("CL2SV_PlayThisTaunt")
+				net.WriteString(tostring(snd))
 				net.WriteUInt(100, 9)
 				net.WriteUInt(pitch_slider:GetValue(), 8)
-			net.SendToServer();
+			net.SendToServer()
 			isplayed = true
-			timer.Simple(GetConVar("ph_customtaunts_delay"):GetInt(), function() isplayed = false; end)
+			timer.Simple(GetConVar("ph_customtaunts_delay"):GetInt(), function() isplayed = false end)
 		else
 			chat.AddText(Color(220,40,0),"[PH:E - Taunts] Warning: ",Color(220,220,220),"Please wait in " .. GetConVar("ph_customtaunts_delay"):GetInt() .. " seconds...!")
 		end
@@ -229,11 +217,11 @@ local function MainFrame()
 		local getline = TranslateTaunt(list:GetLine(list:GetSelectedLine()):GetValue(1))
 
 		local menu = DermaMenu()
-		menu:AddOption("Play (Local)", function() surface.PlaySound(getline); print("Playing: " .. getline); end):SetIcon("icon16/control_play.png")
-		menu:AddOption("Play (Global)", function() SendToServer(getline); end):SetIcon("icon16/sound.png")
-		menu:AddOption("Play and Close (Global)", function() SendToServer(getline); frame:Close(); end):SetIcon("icon16/sound_delete.png")
+		menu:AddOption("Play (Local)", function() surface.PlaySound(getline) print("Playing: " .. getline) end):SetIcon("icon16/control_play.png")
+		menu:AddOption("Play (Global)", function() SendToServer(getline) end):SetIcon("icon16/sound.png")
+		menu:AddOption("Play and Close (Global)", function() SendToServer(getline) frame:Close() end):SetIcon("icon16/sound_delete.png")
 		menu:AddSpacer()
-		menu:AddOption("Close Menu", function() frame:Close(); end):SetIcon("icon16/cross.png")
+		menu:AddOption("Close Menu", function() frame:Close() end):SetIcon("icon16/cross.png")
 		menu:Open()
 	end
 
@@ -246,7 +234,9 @@ local function MainFrame()
 		local getline = TranslateTaunt(list:GetLine(list:GetSelectedLine()):GetValue(1))
 		SendToServer(getline)
 
-		if GetConVar("ph_cl_autoclose_taunt"):GetBool() then frame:Close(); end
+		if GetConVar("ph_cl_autoclose_taunt"):GetBool() then 
+			frame:Close()
+		end
 	end
 
 	frame:MakePopup()

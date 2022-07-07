@@ -2,110 +2,155 @@ local function CreateReplConVar(cvarname, cvarvalue, description, ...)
 	return CreateConVar(cvarname, cvarvalue, CLIENT and {FCVAR_REPLICATED} or {FCVAR_REPLICATED, FCVAR_ARCHIVE, FCVAR_NOTIFY}, description, ...)
 end -- replicated only on clients, archive/notify on server
 
--- Playermodels controls convars
 if GetConVar("ph_use_custom_plmodel_for_prop") == nil then
-	CreateReplConVar("ph_use_custom_plmodel_for_prop", "0", "Should use a custom Player's Model for Props when the round begins?")
+	CreateReplConVar("ph_use_custom_plmodel_for_prop", "0", "Should use a custom playermodel for props when the round begins?")
 end
 
 if GetConVar("ph_use_custom_plmodel") == nil then
-	CreateReplConVar("ph_use_custom_plmodel", "0", "Should use a custom player model available for Hunters?\nPlease note that you must have to activate \'ph_use_custom_plmodel_for_prop\' too!")
+	CreateReplConVar("ph_use_custom_plmodel", "0", "Make custom player model available for hunters?")
 end
 
--- Tutorial for ph_use_playermodeltype can be found under FAQ.
 if GetConVar("ph_use_playermodeltype") == nil then
 	CreateReplConVar("ph_use_playermodeltype", "0", "Which model list that should deliver from? 0 = All Playermodels availale, 1 = Use Legacy method: list.Get('PlayerOptionsModel') (Recommended if you want to custom your model list)")
 end
 
--- Enhanced Prop Hunt specify convars
 if GetConVar("ph_prop_camera_collisions") == nil then
 	CreateReplConVar("ph_prop_camera_collisions", "0", "Attempts to stop props from viewing inside walls.")
 end
 
 if GetConVar("ph_freezecam") == nil then
-	CreateReplConVar("ph_freezecam", "1", "Freeze Camera.")
+	CreateReplConVar("ph_freezecam", "1", "Enable freeze camera.")
 end
 
 if GetConVar("ph_prop_collision") == nil then
-	CreateReplConVar("ph_prop_collision", "0", "Should Team Props collide with each other?")
+	CreateReplConVar("ph_prop_collision", "0", "Should props collide with each other?")
 end
 
--- Custom Taunts ConVars
-local ct_delay	= CreateConVar("ph_customtaunts_delay", "6", { FCVAR_SERVER_CAN_EXECUTE, FCVAR_REPLICATED, FCVAR_ARCHIVE, FCVAR_NOTIFY }, "How many in seconds delay for props to play custom taunt again? (Default is 6)")
-local ct_enable	= CreateConVar("ph_enable_custom_taunts", "0", { FCVAR_SERVER_CAN_EXECUTE, FCVAR_REPLICATED, FCVAR_ARCHIVE, FCVAR_NOTIFY }, "Enable custom taunts for prop teams by pressing C? (Default 0)\n  You must have a list of custom taunts to enable this.")
-local nt_delay	= CreateConVar("ph_normal_taunt_delay", "2", { FCVAR_SERVER_CAN_EXECUTE, FCVAR_REPLICATED, FCVAR_ARCHIVE, FCVAR_NOTIFY }, "How many in seconds delay for props to play normal [F3] taunt again? (Default is 2)")
-
--- The Prop Jump Multiplier (count by float)
-local pjumpx	= CreateConVar("ph_prop_jumppower", "1.4", {FCVAR_SERVER_CAN_EXECUTE, FCVAR_REPLICATED, FCVAR_ARCHIVE, FCVAR_NOTIFY}, "Multipliers for Prop Jump Power (Do not confused with Prop's Gravity!). Default is 1.4. Min. 1.")
-
--- The 'Prop Rotation' Notification
-local rotation_notify = CreateConVar("ph_notice_prop_rotation", "1", {FCVAR_SERVER_CAN_EXECUTE, FCVAR_REPLICATED, FCVAR_ARCHIVE, FCVAR_NOTIFY}, "Enable Prop Rotation notification on every time Prop Spawns.")
-
--- Freezecam Sound Overrides & Cue Path checks (make sure they don't use '\' but instead '/')
-local fc_sound	= CreateConVar("ph_fc_use_single_sound", "0", {FCVAR_SERVER_CAN_EXECUTE, FCVAR_REPLICATED, FCVAR_ARCHIVE, FCVAR_NOTIFY}, "Use single Freezecam sound instead of sound list?")
-local fc_cue	= CreateConVar("ph_fc_cue_path", "misc/freeze_cam.wav", {FCVAR_SERVER_CAN_EXECUTE, FCVAR_REPLICATED, FCVAR_ARCHIVE, FCVAR_NOTIFY}, "Path for single Freezecam sound.")
-if SERVER then
-	cvars.AddChangeCallback("ph_fc_cue_path", function(cvar,old,new) PHE.LegalCuePath = string.Replace(new, "\\", "/") end, "fc_path_modify")
+if GetConVar("ph_customtaunts_delay") == nil then
+	CreateReplConVar("ph_customtaunts_delay", "6", "Delay (in secondes) for props to play custom taunt again.")
 end
 
--- Lucky Ball ConVars
-local lball		= CreateConVar("ph_enable_lucky_balls", "1", { FCVAR_SERVER_CAN_EXECUTE, FCVAR_REPLICATED, FCVAR_NOTIFY }, "Spawn Lucky balls on breakable props?")
-local dball		= CreateConVar("ph_enable_devil_balls", "1", { FCVAR_SERVER_CAN_EXECUTE, FCVAR_REPLICATED, FCVAR_NOTIFY }, "Spawn Devil balls when hunter dies?")
+if GetConVar("ph_enable_custom_taunts") == nil then
+	CreateReplConVar("ph_enable_custom_taunts", "1", "Enable custom taunts for prop teams by pressing C?\n  You must have a list of custom taunts to enable this.")
+end
 
--- PlayerID on Team Specific
-local plnames	= CreateConVar("ph_enable_plnames", "0", { FCVAR_SERVER_CAN_EXECUTE, FCVAR_REPLICATED, FCVAR_ARCHIVE, FCVAR_NOTIFY }, "Serverside control for if a clients see client\'s team player names through walls.")
+if GetConVar("ph_normal_taunt_delay") == nil then
+	CreateReplConVar("ph_normal_taunt_delay", "2", "How many in seconds delay for props to play normal [F3] taunt again?")
+end
 
--- Generic Prop Hunt ConVars
-local h_penalty	= CreateConVar("ph_hunter_fire_penalty", "5", { FCVAR_SERVER_CAN_EXECUTE, FCVAR_REPLICATED, FCVAR_ARCHIVE, FCVAR_NOTIFY }, "Health points removed from hunters when they shoot.")
-local h_killbns	= CreateConVar("ph_hunter_kill_bonus", "100", { FCVAR_SERVER_CAN_EXECUTE, FCVAR_REPLICATED, FCVAR_ARCHIVE, FCVAR_NOTIFY }, "How much health to give back to the Hunter after killing a prop.")
-local h_smg_grenades = CreateConVar("ph_hunter_smg_grenades", "1", { FCVAR_SERVER_CAN_EXECUTE, FCVAR_REPLICATED, FCVAR_ARCHIVE, FCVAR_NOTIFY }, "How many grenades do hunters get. Zero means none.")
-local h_swap	= CreateConVar("ph_swap_teams_every_round", "1", { FCVAR_SERVER_CAN_EXECUTE, FCVAR_REPLICATED, FCVAR_ARCHIVE, FCVAR_NOTIFY }, "Should teams swapped on every round?")
-local game_time	= CreateConVar("ph_game_time", "30", { FCVAR_SERVER_CAN_EXECUTE, FCVAR_REPLICATED, FCVAR_ARCHIVE, FCVAR_NOTIFY }, "Maximum Time Left (in minutes) - Default is 30 minutes.")
-local blind_time = CreateConVar("ph_hunter_blindlock_time", "30", { FCVAR_SERVER_CAN_EXECUTE, FCVAR_REPLICATED, FCVAR_ARCHIVE, FCVAR_NOTIFY }, "How long hunters are blinded (in seconds)")
-local round_time = CreateConVar("ph_round_time", "300", { FCVAR_SERVER_CAN_EXECUTE, FCVAR_REPLICATED, FCVAR_ARCHIVE, FCVAR_NOTIFY }, "Time (in seconds) for each rounds.")
-local round_map	= CreateConVar("ph_rounds_per_map", "10", { FCVAR_SERVER_CAN_EXECUTE, FCVAR_REPLICATED, FCVAR_ARCHIVE, FCVAR_NOTIFY }, "Numbers played on a map (Default: 10)")
+if GetConVar("ph_prop_jumppower") == nil then
+	CreateReplConVar("ph_prop_jumppower", "1.4", "Multipliers for Prop Jump Power (Do not confused with Prop's Gravity!). Min. 1.")
+end
 
--- Round Control
-local wait_pl	= CreateConVar("ph_waitforplayers", "1", { FCVAR_SERVER_CAN_EXECUTE, FCVAR_REPLICATED, FCVAR_ARCHIVE, FCVAR_NOTIFY }, "Should we wait for players for proper round?")
-local wait_pl_min = CreateConVar("ph_min_waitforplayers", "1", { FCVAR_SERVER_CAN_EXECUTE, FCVAR_REPLICATED, FCVAR_ARCHIVE }, "Numbers of mininum players that we should wait for round start. Value must not contain less than 1.")
+if GetConVar("ph_notice_prop_rotation") == nil then
+	CreateReplConVar("ph_notice_prop_rotation", "1", "Enable Prop Rotation notification on every time Prop Spawns.")
+end
+
+if GetConVar("ph_enable_lucky_balls") == nil then
+	CreateReplConVar("ph_enable_lucky_balls", "1", "Spawn lucky balls when props break?")
+end
+
+if GetConVar("ph_enable_devil_balls") == nil then
+	CreateReplConVar("ph_enable_devil_balls", "1", "Spawn devil balls when hunters die?")
+end
+
+if GetConVar("ph_enable_plnames") == nil then
+	CreateReplConVar("ph_enable_plnames", "0", "Serverside control for if a clients see client\'s team player names through walls.")
+end
+
+if GetConVar("ph_hunter_fire_penalty") == nil then
+	CreateReplConVar("ph_hunter_fire_penalty", "5", "Health points removed from hunters when they shoot.")
+end
+
+if GetConVar("ph_hunter_kill_bonus") == nil then
+	CreateReplConVar("ph_hunter_kill_bonus", "100", "How much health to give back to the Hunter after killing a prop.")
+end
+
+if GetConVar("ph_hunter_smg_grenades") == nil then
+	CreateReplConVar("ph_hunter_smg_grenades", "1", "How many grenades do hunters get. Zero means none.")
+end
+
+if GetConVar("ph_swap_teams_every_round") == nil then
+	CreateReplConVar("ph_swap_teams_every_round", "1", "Should teams swapped on every round?")
+end
+
+if GetConVar("ph_game_time") == nil then
+	CreateReplConVar("ph_game_time", "30", "Maximum Time Left (in minutes) - Default is 30 minutes.")
+end
+
+if GetConVar("ph_hunter_blindlock_time") == nil then
+	CreateReplConVar("ph_hunter_blindlock_time", "30", "How long hunters are blinded (in seconds)")
+end
+
+if GetConVar("ph_round_time") == nil then
+	CreateReplConVar("ph_round_time", "300", "Time (in seconds) for each rounds.")
+end
+
+if GetConVar("ph_rounds_per_map") == nil then
+	CreateReplConVar("ph_rounds_per_map", "10", "Numbers played on a map (Default: 10)")
+end
+
+if GetConVar("ph_waitforplayers") == nil then
+	CreateReplConVar("ph_waitforplayers", "1", "Should we wait for players for proper round?")
+end
+
+if GetConVar("ph_min_waitforplayers") == nil then
+	CreateReplConVar("ph_min_waitforplayers", "1", "Numbers of mininum players that we should wait for round start. Value must not contain less than 1.")
+end
 
 -- Verbose mode & Function
-local verbose	= CreateConVar("ph_print_verbose", "0", { FCVAR_SERVER_CAN_EXECUTE, FCVAR_REPLICATED, FCVAR_ARCHIVE }, "Developer Verbose. Some printed messages will only appear if this is enabled.")
+local verbose = CreateConVar("ph_print_verbose", "0", { FCVAR_SERVER_CAN_EXECUTE, FCVAR_REPLICATED, FCVAR_ARCHIVE }, "Developer Verbose. Some printed messages will only appear if this is enabled.")
 function printVerbose(text)
-	if GetConVar("ph_print_verbose"):GetBool() && text then
+	if GetConVar("ph_print_verbose"):GetBool() and text then
 		print(tostring(text))
 	end
 end
 
--- Autotaunt delay (in seconds)
-local at_delay	= CreateConVar("ph_autotaunt_delay", "45", { FCVAR_SERVER_CAN_EXECUTE, FCVAR_REPLICATED, FCVAR_ARCHIVE }, "The delay for the auto taunt")
+if GetConVar("ph_min_waitforplayers") == nil then
+	CreateReplConVar("ph_autotaunt_delay", "45", "The delay for the auto taunt")
+end
 
--- Is autotaunt enabled
-local at_enable	= CreateConVar("ph_autotaunt_enabled", "1",{ FCVAR_SERVER_CAN_EXECUTE, FCVAR_REPLICATED, FCVAR_ARCHIVE }, "Should auto taunting be enabled")
+if GetConVar("ph_min_waitforplayers") == nil then
+	CreateReplConVar("ph_autotaunt_enabled", "1", "Should auto taunting be enabled")
+end
 
--- OBB Model Data Modifier, specified on map.
-local obb_mod	= CreateConVar("ph_sv_enable_obb_modifier", "1",{ FCVAR_SERVER_CAN_EXECUTE, FCVAR_REPLICATED, FCVAR_ARCHIVE }, "Developer: Enable OBB Model Data Modifier")
-local obb_every = CreateConVar("ph_reload_obb_setting_everyround", "1",{ FCVAR_SERVER_CAN_EXECUTE, FCVAR_REPLICATED, FCVAR_ARCHIVE }, "Developer: Reload OBB Model Data Modifier Every round Restarts")
+if GetConVar("ph_sv_enable_obb_modifier") == nil then
+	CreateConVar("ph_sv_enable_obb_modifier", "1", "Developer: Enable OBB Model Data Modifier")
+end
 
--- This is for a temporary.
-local check_boundaries = CreateConVar("phe_check_props_boundaries", "0", { FCVAR_SERVER_CAN_EXECUTE, FCVAR_REPLICATED, FCVAR_ARCHIVE, FCVAR_NOTIFY }, "[EXPERIMENTAL] This feature is under Work-in-Progress! Enable prop boundaries Check? This will prevent you to stuck with other objects/Wall.")
+if GetConVar("ph_reload_obb_setting_everyround") == nil then
+	CreateConVar("ph_reload_obb_setting_everyround", "1", "Developer: Reload OBB Model Data Modifier Every round Restarts")
+end
 
--- Language implementation
-local lang = CreateConVar("ph_language", "en", { FCVAR_SERVER_CAN_EXECUTE, FCVAR_REPLICATED, FCVAR_ARCHIVE, FCVAR_NOTIFY }, "Language of the server, requires map change.")
+if GetConVar("phe_check_props_boundaries") == nil then
+	CreateReplConVar("phe_check_props_boundaries", "0", "[EXPERIMENTAL] Enable prop boundaries Check? This will prevent you to stuck with other objects/Wall.")
+end
 
--- Team balance stuff
-local joinBalance = CreateConVar("ph_forcejoinbalancedteams", "1", { FCVAR_SERVER_CAN_EXECUTE, FCVAR_REPLICATED, FCVAR_ARCHIVE, FCVAR_NOTIFY }, "Force players to even out teams upon joining")
-local autoBalance = CreateConVar("ph_autoteambalance", "1", { FCVAR_SERVER_CAN_EXECUTE, FCVAR_REPLICATED, FCVAR_ARCHIVE, FCVAR_NOTIFY }, "Automatically even out teams at the start of a round")
+if GetConVar("ph_language") == nil then
+	CreateReplConVar("ph_language", "en", "Language of the server, requires map change.")
+end
 
--- Custom pickup (0 = no one lifts bro; 1 = everyone allowed to pick up props; 2 = only hunters can pick up (props can still become them))
-local pickupMode = CreateConVar("ph_allow_prop_pickup", "1", { FCVAR_SERVER_CAN_EXECUTE, FCVAR_REPLICATED, FCVAR_ARCHIVE, FCVAR_NOTIFY }, "Allow players to pick up small props")
+if GetConVar("ph_allow_prop_pickup") == nil then
+	CreateReplConVar("ph_allow_prop_pickup", "1", "Allow players to pick up small props")
+end
 
-GM.ForceJoinBalancedTeams = joinBalance:GetBool()
-GM.AutomaticTeamBalance = autoBalance:GetBool()
+local ph_forcejoinbalancedteams = GetConVar("ph_forcejoinbalancedteams")
+if ph_forcejoinbalancedteams == nil then
+	ph_forcejoinbalancedteams = CreateReplConVar("ph_forcejoinbalancedteams", "1", "Force players to even out teams upon joining")
+end
 
--- Update automatically so they take effect right away
+GM.ForceJoinBalancedTeams = ph_forcejoinbalancedteams:GetBool()
+
 cvars.AddChangeCallback("ph_forcejoinbalancedteams", function()
 	GAMEMODE.ForceJoinBalancedTeams = GetConVar("ph_forcejoinbalancedteams"):GetBool()
 end)
+
+local ph_autoteambalance = GetConVar("ph_autoteambalance")
+if ph_autoteambalance == nil then
+	ph_autoteambalance = CreateReplConVar("ph_autoteambalance", "1", "Automatically even out teams at the start of a round")
+end
+
+GM.AutomaticTeamBalance = ph_autoteambalance:GetBool()
 
 cvars.AddChangeCallback("ph_autoteambalance", function()
 	GAMEMODE.AutomaticTeamBalance = GetConVar("ph_autoteambalance"):GetBool()

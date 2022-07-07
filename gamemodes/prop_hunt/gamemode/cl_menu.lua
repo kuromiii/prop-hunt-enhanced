@@ -59,9 +59,11 @@ function ph_BaseMainWindow(ply, cmd, args)
 				chk:SetText(text)
 				local num = GetConVar(cmd):GetBool()
 				if num then
-					chk:SetChecked(true); chk:SetValue(1);
+					chk:SetChecked(true) 
+					chk:SetValue(1)
 				else
-					chk:SetChecked(false); chk:SetValue(0);
+					chk:SetChecked(false) 
+					chk:SetValue(0)
 				end
 				function chk:OnChange(bool)
 					local v = 0
@@ -357,7 +359,10 @@ function ph_BaseMainWindow(ply, cmd, args)
 			surface.SetDrawColor(pnl.hover.r,pnl.hover.g,pnl.hover.b,255)
 			surface.DrawRect(0,0,motd:GetWide(),motd:GetTall())
 		end
-		motd.DoClick = function() ply:ConCommand("ulx motd"); frm:Close() end
+		motd.DoClick = function() 
+			ply:ConCommand("ulx motd") 
+			frm:Close() 
+		end
 
 		local bnext = vgui.Create("DButton", pBottom)
 		bnext:Dock(RIGHT)
@@ -679,7 +684,6 @@ function ph_BaseMainWindow(ply, cmd, args)
 		Ph:CreateVGUIType("phe_check_props_boundaries", "check", "SERVER", grid, "[WORK IN PROGRESS] Enable Boundaries Check? This prevents you to get stuck with objects/walls.")
 		Ph:CreateVGUIType("ph_print_verbose", "check", "SERVER", grid, "Developer: Enable verbose information of PH:E events in the console")
 		Ph:CreateVGUIType("ph_enable_plnames", "check", "SERVER", grid, "Enable Player team names to be appear on their screen.")
-		Ph:CreateVGUIType("ph_fc_use_single_sound", "check", "SERVER", grid, "Use single Freezecam sound instead of sound list (Use 'ph_fc_cue_path' to determine Freezecam sound path)")
 		Ph:CreateVGUIType("ph_use_playermodeltype", "check", "SERVER", grid, "Use Legacy Model List : 0 = All Playermodels (AddValidModel), 1 = Use Legacy: list.Get('PlayerOptionsModel')")
 		Ph:CreateVGUIType("ph_prop_jumppower", "slider", {min = 1, max = 3, init = GetConVar("ph_prop_jumppower"):GetFloat(), dec = 2, float = true, kind = "SERVER"}, grid, "Additional Jump Power multiplier for Props")
 		Ph:CreateVGUIType("ph_sv_enable_obb_modifier","check","SERVER",grid, "Developer: Enable Customized Prop Entity OBB Model Data Modifier")

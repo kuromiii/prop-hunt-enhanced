@@ -48,7 +48,7 @@ local function outElastic(t, b, c, d, a, p)
 end
 
 local function AutoTauntPaint()
-	if !isEnabled || !isProp || !started then return; end
+	if !isEnabled || !isProp || !started then return end
 
 	if tweenTime < 1 then
 		x = outElastic(tweenTime, xStart, xEnd - xStart, 1, 1, 0.5)

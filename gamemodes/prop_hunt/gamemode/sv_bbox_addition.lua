@@ -51,14 +51,14 @@ local function DoConfig()
 		ent.m_dHull = tab2
 	end
 
-	for i = 1,#data do
+	for i = 1, #data do
 		local tent = ents.FindByModel(data[i][1])
 		local min 	= Vector(data[i][2]["min"][1],data[i][2]["min"][2],data[i][2]["min"][3])
 		local max 	= Vector(data[i][2]["max"][1],data[i][2]["max"][2],data[i][2]["max"][3])
 		local dmin 	= Vector(data[i][2]["dmin"][1],data[i][2]["dmin"][2],data[i][2]["dmin"][3])
 		local dmax 	= Vector(data[i][2]["dmax"][1],data[i][2]["dmax"][2],data[i][2]["dmax"][3])
 
-		for _,found in pairs(tent) do
+		for _, found in pairs(tent) do
 			if IsValid(found) then
 				printVerbose("[PH: Enhanced] OBB MODIFIER: Setting up Vector Value for Entity [" .. found:EntIndex() .. "][" .. found:GetModel() .. "] =\n   >Hull-Vector: min " .. tostring(min) .. " max " .. tostring(max) .. "\n   >Duck-Hull Vector: dmin " .. tostring(dmin) .. " dmax " .. tostring(dmax))
 				SetEntityData(found,{min,max},{dmin,dmax})
@@ -69,14 +69,12 @@ local function DoConfig()
 end
 
 hook.Add("Initialize", "PHE.InitOBBModelData", function()
-
 	if !file.Exists("phe-config/obb","DATA") then
 		file.CreateDir("phe-config/obb")
 	end
 
 	timer.Simple(1.5, function()
-		printVerbose("[PH: Enhanced] Initializing OBB ModelData Config. .. ")
-
+		printVerbose("[PH: Enhanced] Initializing OBB ModelData Config...")
 		CUR_MAP_DATA = LoadOBBConfig()
 		DoConfig()
 	end)
@@ -84,17 +82,13 @@ end)
 
 hook.Add("PostCleanupMap", "PHE.PostOBBModelData", function()
 	if GetConVar("ph_reload_obb_setting_everyround"):GetBool() then
-		printVerbose("[PH: Enhanced] PostCleanup OBB ModelData Config. .. ")
-
+		printVerbose("[PH: Enhanced] PostCleanup OBB ModelData Config...")
 		DoConfig()
 	end
 end)
 
 concommand.Add("refresh_obb_map_setting", function(ply)
-
-	printVerbose("[PH: Enhanced] Refreshing OBB Model Data Modifier. .. ")
+	printVerbose("[PH: Enhanced] Refreshing OBB Model Data Modifier...")
 	CUR_MAP_DATA = LoadOBBConfig()
-
 	DoConfig()
-
 end, nil, "Reload PH: Enhanced OBB/Collission Bound Model Data Modifier on this map.", FCVAR_SERVER_CAN_EXECUTE)

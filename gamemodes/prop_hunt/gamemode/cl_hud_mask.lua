@@ -2,19 +2,19 @@
 -- https://gmod.facepunch.com/f/gmoddev/ngzz/Circle-avatars/1/
 
 local function MakeCirclePoly(_x, _y, _r, _points)
-    local _u = (_x + _r * 320) - _x;
-    local _v = (_y + _r * 320) - _y;
+    local _u = (_x + _r * 320) - _x
+    local _v = (_y + _r * 320) - _y
 
-    local _slices = (2 * math.pi) / _points;
-    local _poly = { };
+    local _slices = (2 * math.pi) / _points
+    local _poly = { }
     for i = 0, _points - 1 do
-        local _angle = (_slices * i) % _points;
-        local x = _x + _r * math.cos(_angle);
-        local y = _y + _r * math.sin(_angle);
+        local _angle = (_slices * i) % _points
+        local x = _x + _r * math.cos(_angle)
+        local y = _y + _r * math.sin(_angle)
         table.insert(_poly, { x = x, y = y, u = _u, v = _v })
     end
 
-    return _poly;
+    return _poly
 end
 
 local PANEL = {}
@@ -45,10 +45,10 @@ function PANEL:OnSizeChanged(w, h)
 end
 
 function PANEL:DrawMask(w, h)
-    draw.NoTexture();
-    surface.SetMaterial(self.material);
-    surface.SetDrawColor(color_white);
-    surface.DrawPoly(self.poly);
+    draw.NoTexture()
+    surface.SetMaterial(self.material)
+    surface.SetDrawColor(color_white)
+    surface.DrawPoly(self.poly)
 end
 
 function PANEL:Paint(w, h)
