@@ -106,11 +106,11 @@ function printVerbose(text)
 	end
 end
 
-if GetConVar("ph_min_waitforplayers") == nil then
+if GetConVar("ph_autotaunt_delay") == nil then
 	CreateReplConVar("ph_autotaunt_delay", "45", "The delay for the auto taunt")
 end
 
-if GetConVar("ph_min_waitforplayers") == nil then
+if GetConVar("ph_autotaunt_enabled") == nil then
 	CreateReplConVar("ph_autotaunt_enabled", "1", "Should auto taunting be enabled")
 end
 
