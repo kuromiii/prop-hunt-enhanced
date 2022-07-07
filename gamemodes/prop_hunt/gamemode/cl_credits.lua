@@ -1,12 +1,4 @@
 hook.Add("PH_CustomTabMenu", "PHE.About", function(tab, pVgui)
-	surface.CreateFont("PHE.TitleFont", {
-		font = "Roboto",
-		size = 40,
-		weight = 700,
-		antialias = true,
-		shadow = true
-	})
-
 	local panel = vgui.Create("DPanel", tab)
 	panel:SetBackgroundColor(Color(40,40,40,120))
 

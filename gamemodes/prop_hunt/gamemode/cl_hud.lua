@@ -1,51 +1,3 @@
-surface.CreateFont("PHE.HealthFont", {
-	font = "Roboto",
-	size = 56,
-	weight = 650,
-	antialias = true,
-	shadow = true
-})
-
-surface.CreateFont("PHE.AmmoFont", {
-	font = "Roboto",
-	size = 86,
-	weight = 500,
-	antialias = true,
-	shadow = true
-})
-
-surface.CreateFont("PHE.ArmorFont", {
-	font = "Roboto",
-	size = 32,
-	weight = 500,
-	antialias = true,
-	shadow = true
-})
-
-surface.CreateFont("PHE.TopBarFont", {
-	font = "Roboto",
-	size = 20,
-	weight = 500,
-	antialias = true,
-	shadow = true
-})
-
-surface.CreateFont("PHE.TopBarFontTeam", {
-	font = "Roboto",
-	size = 60,
-	weight = 650,
-	antialias = true,
-	shadow = true
-})
-
-surface.CreateFont("PHE.Trebuchet", {
-	font = "Trebuchet MS",
-	size = 24,
-	weight = 900,
-	antialias = true,
-	shadow = true
-})
-
 -- Hides HUD
 local hide = {
 	["CHudHealth"] 	= true,
@@ -110,7 +62,7 @@ local disabledcolor = Color(100,100,100,255)
 
 hook.Add("HUDPaint", "PHE.MainHUD", function()
 
-	if GetConVar("ph_hud_use_new"):GetBool() then state = true else state = false end;
+	if GetConVar("ph_hud_use_new"):GetBool() then state = true else state = false end
 
 	-- Don't draw if materials didn't load correctly
 	if matw:IsError () && state then

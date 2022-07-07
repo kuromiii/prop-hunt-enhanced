@@ -11,19 +11,6 @@ CreateClientConVar("ph_show_custom_crosshair","1",true,false,"Show custom crossh
 CreateClientConVar("ph_show_tutor_control","1",true,false,"Show 'Prop Gameplay Control' hud on each prop spawns. This only show twice and reset until map changes/user disconnect.")
 CreateClientConVar("ph_cl_taunt_key","95",true,true,"Key to play a random taunt or open the taunts menu depending on server settings.")
 
-surface.CreateFont("HunterBlindLockFont", {
-	font	= "Arial",
-	size	= 14,
-	weight	= 1200,
-	antialias = true,
-	underline = false
-})
-
-surface.CreateFont("TrebuchetBig", {
-	font = "Impact",
-	size = 40
-})
-
 include("sh_init.lua")
 include("sh_config.lua")
 include("cl_hud_mask.lua")
@@ -32,7 +19,7 @@ include("cl_menu.lua")
 include("cl_tauntwindow.lua")
 include("cl_targetid.lua")
 include("cl_autotaunt.lua")
-
+include("cl_fonts.lua")
 include("cl_credits.lua")
 
 -- Called immediately after starting the gamemode 
@@ -373,8 +360,6 @@ Example:
 	table.insert(PHE.FreezeCamSnd, "vo/k_lab/kl_ohdear.wav")
 	...more ]]
 
--- If you wish to use a single sound instead, use ph_fc_use_single_sound 1 & ph_fc_cue_path "<path/sound/file.wav>" convar to override.
-
 PHE.FreezeCamSnd = {
 	-- do not manually add sounds in here, which this may break the sound list. Use table.insert instead!
 	"misc/freeze_cam.wav",
@@ -382,11 +367,7 @@ PHE.FreezeCamSnd = {
 }
 -- Plays the Freeze Cam sound
 net.Receive("PlayFreezeCamSound", function()
-	if GetConVar("ph_fc_use_single_sound"):GetBool() then
-		surface.PlaySound(GetConVar("ph_fc_cue_path"):GetString())
-	else
-		surface.PlaySound(table.Random(PHE.FreezeCamSnd))
-	end
+	surface.PlaySound(table.Random(PHE.FreezeCamSnd))
 end)
 
 -- Sets the player hull
