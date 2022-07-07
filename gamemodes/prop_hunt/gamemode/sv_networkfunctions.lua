@@ -14,7 +14,6 @@ util.AddNetworkString("SendTauntStateCmd")
 
 util.AddNetworkString("CL2SV_PlayThisTaunt")
 util.AddNetworkString("CL2SV_ExchangeProp")
-util.AddNetworkString("utilWLVShowMessage")
 
 util.AddNetworkString("ServerUsablePropsToClient")
 util.AddNetworkString("PH_ForceCloseTauntWindow")
