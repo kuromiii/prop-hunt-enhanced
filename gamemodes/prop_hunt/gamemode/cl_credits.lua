@@ -1,7 +1,5 @@
 hook.Add("PH_CustomTabMenu", "PHE.About", function(tab, pVgui)
-
-	surface.CreateFont("PHE.TitleFont",
-	{
+	surface.CreateFont("PHE.TitleFont", {
 		font = "Roboto",
 		size = 40,
 		weight = 700,
@@ -12,7 +10,7 @@ hook.Add("PH_CustomTabMenu", "PHE.About", function(tab, pVgui)
 	local panel = vgui.Create("DPanel", tab)
 	panel:SetBackgroundColor(Color(40,40,40,120))
 
-	local scroll = vgui.Create( "DScrollPanel", panel )
+	local scroll = vgui.Create("DScrollPanel", panel)
 	scroll:Dock(FILL)
 
 	local grid = vgui.Create("DGrid", scroll)
@@ -27,26 +25,21 @@ hook.Add("PH_CustomTabMenu", "PHE.About", function(tab, pVgui)
 		author	= "Enhanced by: Wolvindra-Vinzuerio, D4UNKN0WNM4N, Lucky & Fafy.",
 		version = GAMEMODE._VERSION,
 		rev 	= GAMEMODE.REVISION,
-		credits	= "Yam, Lucky, Godfather, adk, Lucas2107, Jonpopnycorn, Thundernerd,  stephanlachnit",
+		credits	= "Yam, Lucky, Godfather, adk, Lucas2107, Jonpopnycorn, Thundernerd, stephanlachnit",
 		lgit	= "https://github.com/prop-hunt-enhanced/prop-hunt-enhanced/",
 		lhome	= "https://prophuntenhanced.xyz/",
-		ldonate = GAMEMODE.DONATEURL,
-		lwiki	= "https://prophunt.wolvindra.net/?go=phe_faq",
-		lklog	= "https://prophunt.wolvindra.net/?go=changelog",
-		lplugins = "https://prophunt.wolvindra.net/?go=plugins"
 	}
 
-	pVgui("","label","PHE.TitleFont",grid, label.title )
-	pVgui("","label","Trebuchet24",grid, PHE.LANG.PHEMENU.ABOUT.CURRENTVER .. label.version .. " | " .. PHE.LANG.PHEMENU.ABOUT.CURRENTREV .. label.rev)
-	pVgui("","label","Trebuchet24",grid, PHE.LANG.PHEMENU.ABOUT.ENJOYING )
-	pVgui("","label",false,grid, PHE.LANG.PHEMENU.ABOUT.LINKS )
-	pVgui("","btn",{max = 3,textdata = {
-		[1] = { PHE.LANG.PHEMENU.ABOUT.DONATE, 	  function() gui.OpenURL(label.ldonate) end},
-		[2] = { PHE.LANG.PHEMENU.ABOUT.HOME, 	  function() gui.OpenURL(label.lhome) end},
-		[3] = { PHE.LANG.PHEMENU.ABOUT.GITHUB, 	  	  function() gui.OpenURL(label.lgit) end},
-	}},grid,"")
-	pVgui("spacer1","spacer",nil,grid,"" )
-	pVgui("","label","Trebuchet24",grid, PHE.LANG.PHEMENU.ABOUT.THANKS .. "\n" .. label.credits )
+	pVgui("", "label", "PHE.TitleFont", grid, label.title)
+	pVgui("", "label", "Trebuchet24", grid, PHE.LANG.PHEMENU.ABOUT.CURRENTVER .. label.version .. " | " .. PHE.LANG.PHEMENU.ABOUT.CURRENTREV .. label.rev)
+	pVgui("", "label", "Trebuchet24", grid, PHE.LANG.PHEMENU.ABOUT.ENJOYING)
+	pVgui("", "label", false, grid, PHE.LANG.PHEMENU.ABOUT.LINKS)
+	pVgui("", "btn", {max = 2, textdata = {
+		[1] = { PHE.LANG.PHEMENU.ABOUT.HOME, function() gui.OpenURL(label.lhome) end },
+		[2] = { PHE.LANG.PHEMENU.ABOUT.GITHUB, function() gui.OpenURL(label.lgit) end },
+	}}, grid, "")
+	pVgui("spacer1", "spacer", nil, grid, "")
+	pVgui("", "label", "Trebuchet24", grid, PHE.LANG.PHEMENU.ABOUT.THANKS .. "\n" .. label.credits)
 
 	tab:AddSheet(PHE.LANG.PHEMENU.ABOUT.TAB,panel,"icon16/information.png")
 end)
