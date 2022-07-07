@@ -15,7 +15,7 @@ on:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  setup:
+  gluacheck:
     runs-on: ubuntu-latest
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
@@ -44,10 +44,6 @@ jobs:
       - name: Clone gluacheck
         run: git clone https://github.com/impulsh/gluacheck $HOME/gluacheck
 
-  gluacheck:
-    runs-on: ubuntu-latest
-    needs: [setup]
-    steps:        
       - name: Make luarocks
         run: |
           cd $HOME/gluacheck
