@@ -1,4 +1,4 @@
--- Ship
+-- Include workshop content
 resource.AddWorkshop("2831915190")
 
 -- Send required file to clients

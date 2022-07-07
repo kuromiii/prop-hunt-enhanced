@@ -6,7 +6,6 @@ local hide = {
 	["CHudSecondaryAmmo"] = true
 }
 
-local curteam
 local mat = {
 	[1] = 	Material("vgui/phehud/res_hp_1"),
 	[2] = 	Material("vgui/phehud/res_hp_2"),
@@ -28,8 +27,6 @@ local ava
 	if (IsValid(ava)) then ava:Remove() ava = nil end
 local pos = { x = 0, y = ScrH() - 130 }
 local posw = { x = ScrW() - 480, y = ScrH() - 130 }
-local hp
-local armor
 local hpcolor
 
 local bar = {
@@ -38,7 +35,7 @@ local bar = {
 }
 
 hook.Add("HUDShouldDraw", "PHE.ShouldHideHUD", function(hudname)
-	if GetConVar("ph_hud_use_new"):GetBool() && !matw:IsError () && hide[hudname] then
+	if GetConVar("ph_hud_use_new"):GetBool() && !matw:IsError() && hide[hudname] then
 		return false
 	end
 end)
@@ -62,10 +59,14 @@ local disabledcolor = Color(100,100,100,255)
 
 hook.Add("HUDPaint", "PHE.MainHUD", function()
 
-	if GetConVar("ph_hud_use_new"):GetBool() then state = true else state = false end
+	if GetConVar("ph_hud_use_new"):GetBool() then 
+		state = true 
+	else 
+		state = false 
+	end
 
 	-- Don't draw if materials didn't load correctly
-	if matw:IsError () && state then
+	if matw:IsError() && state then
 		state = false
 	end
 
@@ -80,9 +81,9 @@ hook.Add("HUDPaint", "PHE.MainHUD", function()
 		end
 
 		-- Player Info
-		curteam = LocalPlayer():Team()
-		hp = LocalPlayer():Health()
-		armor = LocalPlayer():Armor()
+		local curteam = LocalPlayer():Team()
+		local hp = LocalPlayer():Health()
+		local armor = LocalPlayer():Armor()
 
 		surface.SetDrawColor(255, 255, 255, 255)
 		surface.SetMaterial(mat[curteam])
@@ -121,7 +122,7 @@ hook.Add("HUDPaint", "PHE.MainHUD", function()
 		surface.DrawTexturedRect(pos.x + 168, pos.y + 74, 32, 32)
 
 		if LocalPlayer():Team() == TEAM_HUNTERS then
-			surface.SetDrawColor(indic.light[LocalPlayer ():FlashlightIsOn () && 1 || 0])
+			surface.SetDrawColor(indic.light[LocalPlayer():FlashlightIsOn() && 1 || 0])
 		end
 		surface.SetMaterial(indic.light.mat)
 		surface.DrawTexturedRect(pos.x + 216, pos.y + 74, 32, 32)
@@ -150,26 +151,19 @@ hook.Add("HUDPaint", "PHE.MainHUD", function()
 		surface.DrawTexturedRect(posw.x, posw.y, 480, 120)
 
 		local curWep = LocalPlayer():GetActiveWeapon()
-
-		local clip
-		local maxclip
-		local mag
-		local mag2
-		local name
-		local percent
-
 		draw.DrawText(PHE.LANG.HUD.AMMO, "PHE.Trebuchet", posw.x + 318, posw.y + 14, color_white, TEXT_ALIGN_RIGHT)
 
 		if IsValid(curWep) then
-			clip 	= curWep:Clip1()
-			maxclip = curWep:GetMaxClip1()
-			mag 	= LocalPlayer():GetAmmoCount(curWep:GetPrimaryAmmoType())
-			mag2	= LocalPlayer():GetAmmoCount(curWep:GetSecondaryAmmoType())
-			name	= language.GetPhrase(curWep:GetPrintName())
+			local clip 	= curWep:Clip1()
+			local maxclip = curWep:GetMaxClip1()
+			local mag 	= LocalPlayer():GetAmmoCount(curWep:GetPrimaryAmmoType())
+			local mag2	= LocalPlayer():GetAmmoCount(curWep:GetSecondaryAmmoType())
+			local name	= language.GetPhrase(curWep:GetPrintName())
 
 			if clip < 0 then clip = 0 end
 			if maxclip < 0 then maxclip = 0 end
 
+			local percent
 			if (clip < 0 || maxclip < 0) then
 				percent = 0
 			else
@@ -183,7 +177,6 @@ hook.Add("HUDPaint", "PHE.MainHUD", function()
 			draw.DrawText(" / " .. mag, "PHE.ArmorFont", posw.x + 136, posw.y + 14, color_white, TEXT_ALIGN_LEFT)
 			draw.DrawText(mag2, "PHE.AmmoFont", ScrW() - 58, posw.y + 14, 		color_white, TEXT_ALIGN_CENTER)
 			draw.DrawText(name, "PHE.TopBarFont", posw.x + 136, posw.y + 80, 	color_white, TEXT_ALIGN_LEFT)
-
 		end
 	end
 

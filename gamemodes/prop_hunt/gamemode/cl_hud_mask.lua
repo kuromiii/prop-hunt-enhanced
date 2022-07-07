@@ -1,20 +1,18 @@
--- Credit goes to this topic:
--- https://gmod.facepunch.com/f/gmoddev/ngzz/Circle-avatars/1/
+local function MakeCirclePoly(_x, _y, r, points)
+    local u = (_x + r * 320) - _x
+    local v = (_y + r * 320) - _y
 
-local function MakeCirclePoly(_x, _y, _r, _points)
-    local _u = (_x + _r * 320) - _x
-    local _v = (_y + _r * 320) - _y
-
-    local _slices = (2 * math.pi) / _points
-    local _poly = { }
-    for i = 0, _points - 1 do
-        local _angle = (_slices * i) % _points
-        local x = _x + _r * math.cos(_angle)
-        local y = _y + _r * math.sin(_angle)
-        table.insert(_poly, { x = x, y = y, u = _u, v = _v })
+    local slices = (2 * math.pi) / points
+    local poly = {}
+    
+    for i = 0, points - 1 do
+        local angle = (slices * i) % points
+        local x = _x + r * math.cos(angle)
+        local y = _y + r * math.sin(angle)
+        table.insert(poly, { x = x, y = y, u = u, v = v })
     end
 
-    return _poly
+    return poly
 end
 
 local PANEL = {}
