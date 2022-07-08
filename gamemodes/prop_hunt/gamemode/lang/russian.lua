@@ -122,8 +122,6 @@ LANG.PHEMENU.PLAYER.ph_cl_spec_hunter_line = "Показывать линию к
 LANG.PHEMENU.PLAYER.cl_enable_luckyballs_icon = "Включить значок 'Счастливый Шар' отображаемый после их появления"
 LANG.PHEMENU.PLAYER.cl_enable_devilballs_icon = "Включить значок 'Шар Дьявола' отображаемый после их появления"
 LANG.PHEMENU.PLAYER.ph_cl_taunt_key = "Кнопка для воспроизведения случайной насмешки"
-
-LANG.PHEMENU.PLAYER.ph_hud_use_new = "Использовать новый интерфейс PH: Enhanced"
 LANG.PHEMENU.PLAYER.ph_show_tutor_control = "Показать всплывающее окно туториала (Показано только 2x при каждом появлении)"
 LANG.PHEMENU.PLAYER.ph_show_custom_crosshair = "Включить сторонний прицел"
 LANG.PHEMENU.PLAYER.ph_show_team_topbar = "Показывать общее количество живых игроков команды в левом верхнем углу (По крайней мере 4 игрока будут показаны)"

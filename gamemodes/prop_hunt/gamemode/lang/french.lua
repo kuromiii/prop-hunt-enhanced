@@ -124,8 +124,6 @@ LANG.PHEMENU.PLAYER.ph_cl_spec_hunter_line = "Afficher la ligne aim des hunters 
 LANG.PHEMENU.PLAYER.cl_enable_luckyballs_icon = "Activer les icones 'Lucky ball'"
 LANG.PHEMENU.PLAYER.cl_enable_devilballs_icon = "Activer les icones 'Devil ball'"
 LANG.PHEMENU.PLAYER.ph_cl_taunt_key = "Bouton pour jouer un Taunt aléatoire"
-
-LANG.PHEMENU.PLAYER.ph_hud_use_new = "Utiliser le nouveau HUD"
 LANG.PHEMENU.PLAYER.ph_show_tutor_control = "Afficher le tutoriel (Apparaît 2x à chaque apparition en Prop)"
 LANG.PHEMENU.PLAYER.ph_show_custom_crosshair = "Activer le Crosshair customisé"
 LANG.PHEMENU.PLAYER.ph_show_team_topbar = "Afficher le nombre total de joueurs de l'équipe en vie (4 joueurs minimum)"

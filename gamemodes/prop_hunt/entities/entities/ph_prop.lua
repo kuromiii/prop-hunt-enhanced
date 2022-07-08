@@ -32,18 +32,21 @@ end
 function ENT:Think()
 	if CLIENT then
 		local pl = self:GetOwner()
-		if IsValid(pl) && pl:Alive() && pl == LocalPlayer() then
+		if IsValid(pl) and pl:Alive() and pl == LocalPlayer() then
 			local me  = LocalPlayer()
 			local pos = me:GetPos()
-			local ang = me:GetAngles()
-			local lockstate = pl:GetPlayerLockedRot()
 
-			if self:GetModel() == "models/player/kleiner.mdl" || self:GetModel() == player_manager.TranslatePlayerModel(GetConVar("cl_playermodel"):GetString()) then
+			if self:GetModel() == "models/player/kleiner.mdl" or self:GetModel() == player_manager.TranslatePlayerModel(GetConVar("cl_playermodel"):GetString()) then
 				self:SetPos(pos)
 			else
 				self:SetPos(pos - Vector(0, 0, self:OBBMins().z))
 			end
-			if !lockstate then self:SetAngles(Angle(0,ang.y,0)) end
+
+			local ang = me:GetAngles()
+			local lockstate = pl:GetPlayerLockedRot()
+			if not lockstate then 
+				self:SetAngles(Angle(0, ang.y, 0)) 
+			end
 		end
 	end
 end

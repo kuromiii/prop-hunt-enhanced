@@ -5,7 +5,6 @@ CreateClientConVar("ph_cl_autoclose_taunt", "1", true, false, "Auto close the ta
 CreateClientConVar("ph_cl_spec_hunter_line", "1", true, false, "Draw a line on hunters so we can see their aim in spectator mode.")
 CreateClientConVar("cl_enable_luckyballs_icon", "1", true,false, "Enable 'Lucky ball' icon to be displayed once they spawned")
 CreateClientConVar("cl_enable_devilballs_icon", "1", true,false, "Enable 'Devil ball' icon to be displayed once they spawned")
-CreateClientConVar("ph_hud_use_new", "1", true, false, "Use new PH: Enhanced HUD")
 CreateClientConVar("ph_show_team_topbar", "1", true, false, "Show total alive team players bar on the top left (Experimental)")
 CreateClientConVar("ph_show_custom_crosshair","1",true,false,"Show custom crosshair for props")
 CreateClientConVar("ph_show_tutor_control","1",true,false,"Show 'Prop Gameplay Control' hud on each prop spawns. This only show twice and reset until map changes/user disconnect.")

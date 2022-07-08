@@ -121,8 +121,6 @@ LANG.PHEMENU.PLAYER.ph_cl_spec_hunter_line = "Dibujar una línea en los hunters 
 LANG.PHEMENU.PLAYER.cl_enable_luckyballs_icon = "Mostrar icono de Bola de la Suerte 'Lucky ball' cuando estas aparecen"
 LANG.PHEMENU.PLAYER.cl_enable_devilballs_icon = "Mostrar icono de Bola del Diablo 'Devil ball' cuando estas aparecen"
 LANG.PHEMENU.PLAYER.ph_cl_taunt_key = "Botón para reproducir un taun aleatorio"
-
-LANG.PHEMENU.PLAYER.ph_hud_use_new = "Usar HUD nueva de PH: Enhanced"
 LANG.PHEMENU.PLAYER.ph_show_tutor_control = "Mostrar tutorial (solo 2 veces al spawnear como prop)"
 LANG.PHEMENU.PLAYER.ph_show_custom_crosshair = "Mostrar Crosshair personalizada"
 LANG.PHEMENU.PLAYER.ph_show_team_topbar = "Mostrar la cantidad total de jugadores vivos arriba a la derecha (al menos 4 jugadores se mostraran)"
