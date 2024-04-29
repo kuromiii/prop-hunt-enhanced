@@ -15,7 +15,6 @@ util.AddNetworkString("SendTauntStateCmd")
 util.AddNetworkString("CL2SV_PlayThisTaunt")
 
 util.AddNetworkString("ServerUsablePropsToClient")
-util.AddNetworkString("PH_TauntWindowStatus")
 util.AddNetworkString("PH_RoundDraw_Snd")
 util.AddNetworkString("PH_TeamWinning_Snd")
 util.AddNetworkString("AutoTauntSpawn")

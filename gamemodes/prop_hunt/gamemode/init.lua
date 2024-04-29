@@ -55,13 +55,6 @@ hook.Add("player_disconnect", "AnnouncePLLeave", function(data)
 	end
 end)
 
--- Force Close taunt window function, determined whenever the round ends, or team winning.
-local function ForceCloseTauntWindow(status)
-	net.Start("PH_TauntWindowStatus")
-		net.WriteBool(status)
-	net.Broadcast()
-end
-
 -- Called alot
 function GM:CheckPlayerDeathRoundEnd()
 	if !GAMEMODE.RoundBased || !GAMEMODE:InRound() then
@@ -73,7 +66,6 @@ function GM:CheckPlayerDeathRoundEnd()
 	if table.Count(Teams) == 0 then
 		GAMEMODE:RoundEndWithResult(1001, PHE.LANG.HUD.DRAW)
 		PHE.VOICE_IS_END_ROUND = 1
-		ForceCloseTauntWindow(true)
 
 		net.Start("PH_RoundDraw_Snd")
 		net.Broadcast()
@@ -89,7 +81,6 @@ function GM:CheckPlayerDeathRoundEnd()
 		-- End Round
 		GAMEMODE:RoundEndWithResult(TeamID, string.format(PHE.LANG.HUD.WIN, team.GetName(TeamID)))
 		PHE.VOICE_IS_END_ROUND = 1
-		ForceCloseTauntWindow(true)
 
 		-- send the win notification
 		if TeamID == TEAM_HUNTERS then
@@ -231,8 +222,6 @@ function GM:PlayerCanPickupWeapon(pl, ent)
 end
 
 function PH_ResetCustomTauntWindowState()
-	-- Force close any taunt menu windows
-	ForceCloseTauntWindow(false)
 	-- Extra additional
 	PHE.VOICE_IS_END_ROUND = 0
 	-- Reset Player's Height
@@ -521,7 +510,6 @@ function GM:RoundTimerEnd()
 
 	GAMEMODE:RoundEndWithResult(TEAM_PROPS, string.format(PHE.LANG.HUD.WIN, "Props"))
 	PHE.VOICE_IS_END_ROUND = 1
-	ForceCloseTauntWindow(true)
 
 	net.Start("PH_TeamWinning_Snd")
 		net.WriteString(PHE.WINNINGSOUNDS[TEAM_PROPS])
@@ -607,16 +595,6 @@ function PH_Props_OnBreak(ply, ent)
 	end
 end
 hook.Add("PropBreak", "Props_OnBreak_WithDrops", PH_Props_OnBreak)
-
--- Force Close the Taunt Menu whenever the prop is being killed.
-function close_PlayerKilledSilently(ply)
-	if ply:Team() == TEAM_PROPS then
-		net.Start("PH_TauntWindowStatus")
-		net.WriteBool(false)
-		net.Send(ply)
-	end
-end
-hook.Add("PlayerSilentDeath", "SilentDed_ForceClose", close_PlayerKilledSilently)
 
 -- Flashlight toggling
 function GM:PlayerSwitchFlashlight(pl, on)

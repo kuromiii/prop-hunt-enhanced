@@ -1,11 +1,6 @@
 local isplayed = false
 local isopened = false
-local isforcedclose = false
 local hastaunt = false
-
-net.Receive("PH_TauntWindowStatus", function()
-	isforcedclose = net.ReadBool()
-end)
 
 local function MainFrame()
 	if GetConVar("ph_enable_custom_taunts"):GetInt() < 1 then
@@ -35,7 +30,7 @@ local function MainFrame()
 	end
 
 	local function frame_Think_Force()
-		if isforcedclose == true && isopened == true then
+		if isopened == true then
 			isopened = false
 			hastaunt = false
 			frame:Close()
@@ -244,7 +239,7 @@ local function MainFrame()
 end
 
 concommand.Add("ph_showtaunts", function()
-	if LocalPlayer():Alive() && isforcedclose != true && LocalPlayer():GetObserverMode() == OBS_MODE_NONE then
+	if LocalPlayer():Alive() && LocalPlayer():GetObserverMode() == OBS_MODE_NONE then
 		if isopened != true then
 			MainFrame()
 		end
